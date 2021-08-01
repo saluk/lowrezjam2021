@@ -1,13 +1,11 @@
-extends RichTextLabel
+extends Sprite
 
 
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-
-export var scroll_speed = 0.2
-signal scroll_finished
-
+export var fade_speed = 0.005
+var animation_started = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -16,6 +14,9 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	margin_top -= scroll_speed
-	if margin_top <= -16:
-		emit_signal("scroll_finished")
+	if animation_started and modulate.a > 0:
+		modulate.a -= fade_speed
+
+
+func _on_TextScroll_scroll_finished():
+	animation_started = true
