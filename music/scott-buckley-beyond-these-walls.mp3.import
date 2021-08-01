@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/scott-buckley-beyond-these-walls.mp3-814c18515839943a65115566cdbc84bc.mp3str"
+
+[deps]
+
+source_file="res://music/scott-buckley-beyond-these-walls.mp3"
+dest_files=[ "res://.import/scott-buckley-beyond-these-walls.mp3-814c18515839943a65115566cdbc84bc.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

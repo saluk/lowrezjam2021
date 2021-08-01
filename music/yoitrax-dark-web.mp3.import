@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/yoitrax-dark-web.mp3-a10f50796f44b06a380e5e8687153b20.mp3str"
+
+[deps]
+
+source_file="res://music/yoitrax-dark-web.mp3"
+dest_files=[ "res://.import/yoitrax-dark-web.mp3-a10f50796f44b06a380e5e8687153b20.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

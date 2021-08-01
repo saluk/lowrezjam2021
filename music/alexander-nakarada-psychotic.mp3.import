@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/alexander-nakarada-psychotic.mp3-88bd924c7557b8aa6f15bf5e54fd1bf3.mp3str"
+
+[deps]
+
+source_file="res://music/alexander-nakarada-psychotic.mp3"
+dest_files=[ "res://.import/alexander-nakarada-psychotic.mp3-88bd924c7557b8aa6f15bf5e54fd1bf3.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

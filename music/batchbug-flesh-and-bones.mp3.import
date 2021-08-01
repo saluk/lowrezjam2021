@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/batchbug-flesh-and-bones.mp3-de607b339da0886352d6a1a2650fc229.mp3str"
+
+[deps]
+
+source_file="res://music/batchbug-flesh-and-bones.mp3"
+dest_files=[ "res://.import/batchbug-flesh-and-bones.mp3-de607b339da0886352d6a1a2650fc229.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

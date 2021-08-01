@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/yoitrax-lonely-streets.mp3-88bddd35c5a3cb7af88d145214e6d2ca.mp3str"
+
+[deps]
+
+source_file="res://music/yoitrax-lonely-streets.mp3"
+dest_files=[ "res://.import/yoitrax-lonely-streets.mp3-88bddd35c5a3cb7af88d145214e6d2ca.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
