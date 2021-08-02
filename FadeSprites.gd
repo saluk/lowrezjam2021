@@ -9,8 +9,9 @@ var animation_started = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	modulate.a = 1.0
-	visible = true
+	pass
+	#modulate.a = 1.0
+	#visible = true
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
