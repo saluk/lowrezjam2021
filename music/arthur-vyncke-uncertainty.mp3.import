@@ -2,12 +2,12 @@
 
 importer="mp3"
 type="AudioStreamMP3"
-path="res://.import/arthur-vyncke-uncertainty.mp3-b8fbf25780b2dbca151ef4e1c1469bd9.mp3str"
+path="res://.import/arthur-vyncke-uncertainty.mp3-b7cd1ee8ebb1d190fbc33295977e1d01.mp3str"
 
 [deps]
 
-source_file="res://music/arthur-vyncke-uncertainty.mp3"
-dest_files=[ "res://.import/arthur-vyncke-uncertainty.mp3-b8fbf25780b2dbca151ef4e1c1469bd9.mp3str" ]
+source_file="res://export/music/arthur-vyncke-uncertainty.mp3"
+dest_files=[ "res://.import/arthur-vyncke-uncertainty.mp3-b7cd1ee8ebb1d190fbc33295977e1d01.mp3str" ]
 
 [params]
 

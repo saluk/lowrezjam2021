@@ -2,12 +2,12 @@
 
 importer="mp3"
 type="AudioStreamMP3"
-path="res://.import/aderin-pursuit.mp3-bf22f70fee5b4a9e0e2f884429cd2928.mp3str"
+path="res://.import/aderin-pursuit.mp3-85dc0181b3fc4d72ea0dd5bb4ae511fa.mp3str"
 
 [deps]
 
-source_file="res://music/aderin-pursuit.mp3"
-dest_files=[ "res://.import/aderin-pursuit.mp3-bf22f70fee5b4a9e0e2f884429cd2928.mp3str" ]
+source_file="res://export/music/aderin-pursuit.mp3"
+dest_files=[ "res://.import/aderin-pursuit.mp3-85dc0181b3fc4d72ea0dd5bb4ae511fa.mp3str" ]
 
 [params]
 

@@ -2,12 +2,12 @@
 
 importer="mp3"
 type="AudioStreamMP3"
-path="res://.import/alexander-nakarada-psychotic.mp3-88bd924c7557b8aa6f15bf5e54fd1bf3.mp3str"
+path="res://.import/alexander-nakarada-psychotic.mp3-18b3a16732d5383c358a08c20a49c6c3.mp3str"
 
 [deps]
 
-source_file="res://music/alexander-nakarada-psychotic.mp3"
-dest_files=[ "res://.import/alexander-nakarada-psychotic.mp3-88bd924c7557b8aa6f15bf5e54fd1bf3.mp3str" ]
+source_file="res://export/music/alexander-nakarada-psychotic.mp3"
+dest_files=[ "res://.import/alexander-nakarada-psychotic.mp3-18b3a16732d5383c358a08c20a49c6c3.mp3str" ]
 
 [params]
 
