@@ -10,11 +10,18 @@ var over = false
 var click = false
 
 func new_state():
+	var shadow = get("custom_colors/font_color_shadow")
 	var temp_text = original_text
 	if click:
 		temp_text = "[color=yellow]" + temp_text + "[/color]"
 	elif over:
-		temp_text = "[tornado radius=2 freq=4]" + temp_text + "[/tornado]"
+		#temp_text = "[tornado radius=2 freq=4]" + temp_text + "[/tornado]"
+		if not shadow:
+			set("custom_colors/font_color_shadow", Color(0, 0, 0, 1))
+	if not over and shadow != null:
+		print(shadow)
+		print("clear shadow")
+		set("custom_colors/font_color_shadow", null)
 	if bbcode_text != temp_text:
 		bbcode_text = temp_text
 
