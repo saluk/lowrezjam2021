@@ -6,7 +6,10 @@ var over_list = []
 
 var handlers = []
 
+var current_point = "Green Coast"
+
 var mouse_clicked = false
+var destination = null
 
 func _input(ev):
 	if ev is InputEventMouseButton:
@@ -23,8 +26,8 @@ func set_mouse_over(over):
 		return
 	over_list.append(over)
 	if over.has_method("_mouse_enter"):
-		print("call mouse enter")
 		over._mouse_enter()
+	print("over:",over.name)
 	get_node("/root/Node2D/Interface/Control/MouseCursor").set_cursor(over.icon)
 	
 func clear_mouse_over(over):
@@ -38,3 +41,9 @@ func clear_mouse_over(over):
 		get_node("/root/Node2D/Interface/Control/MouseCursor").set_cursor(over_list[-1].icon)
 	else:
 		get_node("/root/Node2D/Interface/Control/MouseCursor").set_cursor("normal")
+
+func set_destination(point):
+	if self.destination:
+		self.destination.deactivate()
+	self.destination = point
+	self.destination.activate()
