@@ -8,6 +8,7 @@ extends RichTextLabel
 var original_text
 var over = false
 var click = false
+var icon = "active"
 
 func new_state():
 	var shadow = get("custom_colors/font_color_shadow")
@@ -25,11 +26,13 @@ func new_state():
 	if bbcode_text != temp_text:
 		bbcode_text = temp_text
 
-func _button_mouse_enter():
+func _mouse_enter():
+	#get_node("../../MouseCursor").set_cursor("active")
 	over = true
 	new_state()
 
-func _button_mouse_exit():
+func _mouse_exit():
+	#get_node("../../MouseCursor").set_cursor("normal")
 	over = false
 	print("mouse_exit")
 	new_state()
@@ -47,9 +50,8 @@ func _button_mouse_release():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	Globals.register_mouse_handler(self, self)
 	original_text = bbcode_text
-	connect("mouse_entered", self, "_button_mouse_enter")
-	connect("mouse_exited", self, "_button_mouse_exit")
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

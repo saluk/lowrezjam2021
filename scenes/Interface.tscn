@@ -1,0 +1,98 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://code/RichTextLabel.gd" type="Script" id=1]
+[ext_resource path="res://code/snake_bitmap.gd" type="Script" id=2]
+[ext_resource path="res://code/FadeSprites.gd" type="Script" id=3]
+[ext_resource path="res://code/AudioStreamPlayer.gd" type="Script" id=4]
+[ext_resource path="res://theme.tres" type="Theme" id=5]
+[ext_resource path="res://code/button.gd" type="Script" id=6]
+[ext_resource path="res://art/black.png" type="Texture" id=7]
+[ext_resource path="res://music/aderin-pursuit.mp3" type="AudioStream" id=8]
+[ext_resource path="res://art/snake_bitmap.png" type="Texture" id=9]
+[ext_resource path="res://scenes/MouseCursor.tscn" type="PackedScene" id=10]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="snake_bitmap" type="Sprite" parent="."]
+position = Vector2( 32, 32 )
+texture = ExtResource( 9 )
+script = ExtResource( 2 )
+
+[node name="Interface" type="Node" parent="."]
+
+[node name="Control" type="Control" parent="Interface"]
+margin_right = 64.0
+margin_bottom = 64.0
+theme = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="attack_button" type="RichTextLabel" parent="Interface/Control"]
+margin_right = 32.0
+margin_bottom = 8.0
+rect_pivot_offset = Vector2( 32, 24 )
+bbcode_enabled = true
+bbcode_text = "Attack"
+text = "Attack"
+scroll_active = false
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="defend_button" type="RichTextLabel" parent="Interface/Control"]
+margin_left = 32.0
+margin_right = 64.0
+margin_bottom = 8.0
+rect_pivot_offset = Vector2( 32, 24 )
+bbcode_enabled = true
+bbcode_text = "Defend"
+text = "Defend"
+scroll_active = false
+script = ExtResource( 6 )
+
+[node name="Stats" type="RichTextLabel" parent="Interface/Control"]
+margin_left = 64.0
+margin_right = 128.0
+margin_bottom = 64.0
+rect_pivot_offset = Vector2( 32, 24 )
+text = "STR - 6
+MAG - 5
+AGILE - 2
+INT - 4
+
+Items"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FadeSprites" type="Sprite" parent="Interface/Control"]
+visible = false
+position = Vector2( 32, 32 )
+texture = ExtResource( 7 )
+script = ExtResource( 3 )
+
+[node name="TextScroll" type="RichTextLabel" parent="Interface/Control"]
+visible = false
+margin_top = 64.0
+margin_right = 64.0
+margin_bottom = 232.0
+custom_colors/default_color = Color( 1, 1, 1, 1 )
+text = "In the year 1200
+
+When danger was always at hand"
+scroll_active = false
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MouseCursor" parent="Interface/Control" instance=ExtResource( 10 )]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+script = ExtResource( 4 )
+
+[connection signal="scroll_finished" from="Interface/Control/TextScroll" to="Interface/Control/FadeSprites" method="_on_TextScroll_scroll_finished"]
