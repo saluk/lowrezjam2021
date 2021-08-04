@@ -11,6 +11,12 @@ var current_point = null
 
 var mouse_clicked = false
 var destination = null
+var walk_path = null
+
+func get_player_pos():
+	if not walk_path and current_point:
+		return current_point.position + Vector2(6, 2)
+	return null
 
 func _input(ev):
 	if ev is InputEventMouseButton:
@@ -51,3 +57,13 @@ func set_destination(point):
 func safe_call(object, method):
 	if object.has_method(method):
 		object.call(method)
+		
+var cards = {
+	"Green Coast": [
+		{"name":"Trade", "art":["bazaar"]},
+		{"name":"Search", "art":["alley"]}
+	]
+}
+
+func draw_card(cards):
+	pass
