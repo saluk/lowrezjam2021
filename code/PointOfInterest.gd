@@ -14,7 +14,7 @@ func _ready():
 	Globals.register_mouse_handler(self, get_node("Area2D"))
 	
 func is_current_point():
-	return Globals.current_point == location_name
+	return Globals.current_point_location == location_name
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -28,6 +28,8 @@ func _mouse_exit():
 	get_node("/root/Node2D/Interface/Control/PointLabel").text = ""
 	
 func _process(delta):
+	if is_current_point():
+		Globals.current_point = self
 	draw_destination_line()
 		
 func _clicked():

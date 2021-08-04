@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://theme.tres" type="Theme" id=1]
 [ext_resource path="res://scenes/MouseCursor.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/HoverLabel.gd" type="Script" id=3]
+[ext_resource path="res://scenes/MapButton.tscn" type="PackedScene" id=4]
+[ext_resource path="res://art/enter_icon.png" type="Texture" id=5]
 
 [node name="Interface" type="Node2D"]
 
@@ -15,12 +17,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="WalkButton" parent="Control" instance=ExtResource( 4 )]
+
+[node name="EnterButton" parent="Control" instance=ExtResource( 4 )]
+visible = false
+texture = ExtResource( 5 )
+button_action = "enter"
+
 [node name="MouseCursor" parent="Control" instance=ExtResource( 2 )]
 
 [node name="MenuLabel" type="Label" parent="Control"]
 margin_right = 64.0
 margin_bottom = 9.0
-mouse_filter = 0
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Where to?"
 align = 1
