@@ -19,3 +19,8 @@ func set_cursor(art):
 func _on_ScrollMap_override_mouse(mouse_icon = "default"):
 	set_cursor(mouse_icon)
 	
+func _process(delta):
+	if Globals.walk_path:
+		visible = false
+	else:
+		visible = true

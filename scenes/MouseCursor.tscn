@@ -4,6 +4,7 @@
 [ext_resource path="res://code/MouseCursor.gd" type="Script" id=2]
 
 [node name="MouseCursor" type="Node2D"]
+pause_mode = 2
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]

@@ -21,12 +21,12 @@ func _process(delta):
 	#visible = true
 	
 func walk_visible():
-	print(Globals.destination)
 	if Globals.destination:
 		visible = true
 	else:
 		visible = false
-		print("false")
+	if Globals.walk_path:
+		visible = false
 		
 func travel_method():
 	if Globals.destination and Globals.destination == Globals.current_point:
@@ -51,3 +51,6 @@ func point_position(point):
 		if travel_method() != "enter":
 			dir = (Globals.destination.position - Globals.current_point.position).normalized() * 8
 		position = point.global_position + dir
+
+func _clicked():
+	Globals.call("action_" + button_action)

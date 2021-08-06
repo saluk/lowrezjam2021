@@ -1,7 +1,8 @@
 extends Node2D
 
 export var jiggle_speed = 0.07
-export var rot_speed = 0.5
+export var rot_speed_rest = 0.3
+export var rot_speed_walk = 0.5
 var icon = "active"
 
 # Declare member variables here. Examples:
@@ -33,7 +34,12 @@ func update_position():
 		visible = false
 	
 func animate():
+	var rot_speed = rot_speed_rest
+	if Globals.walk_path:
+		get_node("Node2D").position.y = int(float(Engine.get_frames_drawn()) * jiggle_speed) % 2 - 2
+		rot_speed = rot_speed_walk
 	rotation_degrees = int(float(Engine.get_frames_drawn()) * rot_speed) % 25
 	if rotation_degrees > 25/2:
 		rotation_degrees = 25/2 - rotation_degrees
-	get_node("Node2D").position.y = int(float(Engine.get_frames_drawn()) * jiggle_speed) % 2 - 2
+	if Globals.walk_path:
+		get_node("Node2D").position.y = int(float(Engine.get_frames_drawn()) * jiggle_speed) % 2 - 2

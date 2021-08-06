@@ -33,7 +33,8 @@ func _process(delta):
 	draw_destination_line()
 		
 func _clicked():
-	Globals.set_destination(self)
+	if not Globals.walk_path:
+		Globals.set_destination(self)
 	
 func activate():
 	if not active:
