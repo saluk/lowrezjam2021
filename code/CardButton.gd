@@ -27,6 +27,3 @@ func _clicked():
 			self.call("action_"+action)
 		elif Globals.has_method("action_"+action):
 			Globals.call("action_"+action)
-
-func action_close_card():
-	Globals.change_scene("res://scenes/Map.tscn")

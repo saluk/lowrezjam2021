@@ -8,7 +8,10 @@ var over_list = []
 
 var handlers = []
 
-var current_point_location = "Green Coast"
+var save_keys = ["current_point_location", "cards"]
+
+var current_point_location = "Green Coast" # save
+var cards = {} # save
 var current_point = null
 
 var mouse_clicked = false
@@ -17,6 +20,10 @@ var walk_path = null
 var current_card = null
 
 var events = []
+
+func _init():
+	if not load_game():
+		new_game()
 
 func _ready():
 	pause_mode = Node.PAUSE_MODE_PROCESS
@@ -74,6 +81,14 @@ func safe_call(object, method):
 	if object.has_method(method):
 		object.call(method)
 
+func action_new_game():
+	new_game()
+	change_scene("res://scenes/Map.tscn")
+	
+func action_load_game():
+	load_game()
+	change_scene("res://scenes/Map.tscn")
+	
 func action_walk():
 	walk_path = {
 		"start":current_point,
@@ -84,6 +99,10 @@ func action_walk():
 	
 func action_enter():
 	load_card_at(current_point_location)
+	
+func action_close_card():
+	change_scene("res://scenes/Map.tscn")
+	save_game()
 	
 func _process(delta):
 	if wait_for_alert():
@@ -149,14 +168,37 @@ var card_templates = [
 			{"name":"Pass", "actions":["close_card"]}
 	]}
 ]
-var cards = {
-	"Green Coast": [],
-	"Tree of Wealth": [1, 1, 1],
-	"Coal City": [0, 0, 0, 0],
-	"Deep Pit": [1, 1, 1, 0]
-}
 
 func shuffle_decks():
 	randomize()
 	for key in cards:
 		cards[key].shuffle()
+		
+func new_game():
+	current_point_location = "Green Coast"
+	cards = {
+		"Green Coast": [],
+		"Tree of Wealth": [1, 1, 1],
+		"Coal City": [0, 0, 0, 0],
+		"Deep Pit": [1, 1, 1, 0]
+	}
+
+func save_game():
+	var save_file = File.new()
+	save_file.open("user://file1.save", File.WRITE)
+	var save_dict = {}
+	for key in save_keys:
+		save_dict[key] = get(key)
+	save_file.store_line(to_json(save_dict))
+
+func load_game():
+	var fn = "user://file1.save"
+	var save_file = File.new()
+	if not save_file.file_exists(fn):
+		return false
+	save_file.open(fn, File.READ)
+	while save_file.get_position() < save_file.get_len():
+		var save_dict = parse_json(save_file.get_line())
+		for key in save_keys:
+			set(key, save_dict[key])
+	return true
