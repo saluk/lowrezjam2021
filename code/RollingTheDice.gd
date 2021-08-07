@@ -1,6 +1,7 @@
 extends Node2D
 
 var have_dice = false
+var stopped = false
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -29,13 +30,16 @@ func start_roll():
 	have_dice = true
 	
 func stop_roll():
+	stopped = true
 	var box = "/root/Node2D/Interface/Control/ResultBox"
 	var label = box + "/Label"
 	var sum = sum_die()
 	if sum >= Globals.target_number:
-		get_node(label).text = str(sum_die()) + ". Pass! You find 1 gold."
+		get_node(label).text = str(sum_die()) + ". Pass! " + Globals.check_win[0]
+		Globals.card_result(Globals.check_win)
 	else:
-		get_node(label).text = str(sum_die()) + ". Fail! You lose 2 hp."
+		get_node(label).text = str(sum_die()) + ". Fail! " + Globals.check_lose[0]
+		Globals.card_result(Globals.check_lose)
 	get_node(box).show = true
 	
 func sum_die():
@@ -61,5 +65,5 @@ func _process(delta):
 			rolling_die.rolling = false
 			rolling_die.set_number(die[0])
 			waiting -= 1
-	if waiting <= 0:
+	if waiting <= 0 and not stopped:
 		stop_roll()

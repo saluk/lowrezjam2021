@@ -119,16 +119,14 @@ position = Vector2( 11, 35 )
 [node name="RollingTheDice" type="Node2D" parent="Interface/Control"]
 script = ExtResource( 14 )
 
-[node name="MouseCursor" parent="Interface/Control" instance=ExtResource( 7 )]
-
 [node name="ResultBox" type="Node2D" parent="Interface/Control"]
 visible = false
-position = Vector2( 32, 80 )
+position = Vector2( 32, 73 )
 script = ExtResource( 6 )
 
 [node name="Info" type="Sprite" parent="Interface/Control/ResultBox"]
-position = Vector2( 0, -24 )
-scale = Vector2( 1, 0.244 )
+position = Vector2( 0, -19 )
+scale = Vector2( 1, 0.42 )
 texture = ExtResource( 2 )
 
 [node name="Label" type="Label" parent="Interface/Control/ResultBox"]
@@ -138,6 +136,9 @@ margin_right = 29.0
 margin_bottom = -16.0
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_constants/line_spacing = -1
+text = "line 1
+line 2
+line 3"
 autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -152,14 +153,16 @@ node_text_path = "/root/Node2D/Interface/Control/InfoBox/Label"
 hover_description = "Continue"
 use_info_box = true
 
+[node name="MouseCursor" parent="Interface/Control" instance=ExtResource( 7 )]
+
 [node name="InfoBox" type="Node2D" parent="Interface/Control"]
 visible = false
-position = Vector2( 32, 80 )
+position = Vector2( 32, 78 )
 script = ExtResource( 6 )
 
 [node name="Info" type="Sprite" parent="Interface/Control/InfoBox"]
 position = Vector2( 0, -24 )
-scale = Vector2( 1, 0.244 )
+scale = Vector2( 1, 0.42 )
 texture = ExtResource( 2 )
 
 [node name="Label" type="Label" parent="Interface/Control/InfoBox"]

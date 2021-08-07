@@ -47,7 +47,7 @@ __meta__ = {
 
 [node name="New Game" parent="Interface/Control" instance=ExtResource( 5 )]
 button_action = {
-"actions": [ "new_game" ],
+"action": [ "new_game" ],
 "name": "New Game"
 }
 
@@ -60,7 +60,7 @@ text = "New Game"
 
 [node name="Load Game" parent="Interface/Control" instance=ExtResource( 5 )]
 button_action = {
-"actions": [ "load_game" ],
+"action": [ "load_game" ],
 "name": "Load Game"
 }
 

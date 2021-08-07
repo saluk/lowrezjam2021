@@ -3,7 +3,7 @@ extends Node2D
 var icon = "active"
 export var button_action:Dictionary = {
 	"name": "",
-	"actions": []
+	"action": []
 }
 
 func set_action(action):
@@ -21,8 +21,17 @@ func _mouse_exit():
 	get_node("Label").set("custom_colors/font_color", Color(1, 1, 1, 1))
 
 func _clicked():
-	for action in button_action["actions"]:
-		if self.has_method("action_"+action):
-			self.call("action_"+action)
-		elif Globals.has_method("action_"+action):
-			Globals.call("action_"+action)
+	if not "action" in button_action:
+		return
+	var action:Array = button_action["action"]
+	var method = action[0]
+	var arguments = action.slice(1, action.size())
+	var caller
+	if self.has_method("action_"+method):
+		caller = self
+	elif Globals.has_method("action_"+method):
+		caller = Globals
+	if arguments.size() > 0:
+		caller.call("action_"+method, arguments)
+	else:
+		caller.call("action_"+method)

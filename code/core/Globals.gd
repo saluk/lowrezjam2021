@@ -9,12 +9,14 @@ var over_list = []
 
 var handlers = []
 
-var save_keys = ["current_point_location", "cards", "stats"]
+var save_keys = ["current_point_location", "cards", "stats", "gp", "hp"]
 
 var current_point_location = "Green Coast" # save
 var cards = {} # save
 var stats = {} # save
 var equipment = {} # save
+var hp = 3 # save
+var gp = 2 # save
 var stat_descriptions = {
 	"guile":"outsmart\npeople",
 	"power":"win battles",
@@ -34,6 +36,8 @@ var dice_commited = 1
 var stat_checked = "power"
 var rolling_dice = []
 var target_number = 10
+var check_win = []
+var check_lose = []
 
 var events = []
 var sounds = []
@@ -121,6 +125,35 @@ func play_sound(sound, seek_pos):
 	stream.seek(seek_pos)
 	add_child(stream)
 	sounds.append(stream)
+	
+func card_result(result):
+	var text = result[0]
+	var action = result.slice(1,result.size())
+	if not action.size() > 0:
+		return
+	var method = action[0]
+	var arguments = action.slice(1,result.size())
+	if arguments.size() > 0:
+		call("action_"+method, arguments)
+	else:
+		call("action_"+method)
+		
+func action_draw_player_card(arguments):
+	pass
+	
+func action_modify(arguments):
+	var field = arguments[0]
+	var amount = arguments[1]
+	set(field, get(field) + amount)
+	print("modified "+field+" "+str(get(field)))
+	if get(field) <= 0:
+		set(field, 0)
+		if has_method("_"+field+"_below_zero"):
+			call("_"+field+"_below_zero")
+			
+func _hp_below_zero():
+	events.append(["alert", ["Game Over!"]])
+	events.append(["change_scene", ["res://scenes/intro.tscn"]])
 
 func action_new_game():
 	new_game()
@@ -192,7 +225,15 @@ func action_close():
 func action_end_stat_check():
 	rolling_dice = []
 	dice_commited = 0
-	#get_tree().reload_current_scene()
+	change_scene("scenes/Map.tscn")
+	
+func action_check(arguments):
+	rolling_dice = []
+	dice_commited = 0
+	stat_checked = arguments[0]
+	target_number = arguments[1]
+	check_win = arguments[2]
+	check_lose = arguments[3]
 	change_scene("scenes/SkillCheck.tscn")
 
 func process_sounds():
@@ -239,11 +280,13 @@ func wait_for_alert():
 		get_tree().paused = false
 		
 func change_scene(scene_path):
+	print("change scene to "+scene_path)
+	print(get_tree().paused)
 	over_list = []
 	handlers = []
 	current_point = null
 	destination = null
-	get_tree().change_scene_to(ResourceLoader.load(scene_path))
+	get_tree().change_scene(scene_path)
 	
 func load_card_at(point_name):
 	if not point_name in cards:
@@ -264,21 +307,33 @@ func load_card_at(point_name):
 		
 var card_templates = [
 	{"name":"Shop", "art":["bazaar"], "actions":[
-			{"name":"Haggle", "actions":[]},
-			{"name":"Leave", "actions":["close_card"]}
+			{"name":"Haggle", "action":[]},
+			{"name":"Leave", "action":["close_card"]}
 	]},
 	{"name":"Alley", "art":["alley"], "actions":[
-			{"name":"Search", "actions":[]},
-			{"name":"Pass", "actions":["close_card"]}
+			{"name":"Search", "action":[]},
+			{"name":"Pass", "action":["close_card"]}
 	]},
 	{"name":"Rune Found", "art":["alley"], "actions":[
-		{"name":"Start Over", "actions":["new_game"]},
-		{"name":"Quit", "actions":["quit_game"]}
+		{"name":"Start Over", "action":["new_game"]},
+		{"name":"Quit", "action":["quit_game"]}
 	]},
 	{"name":"Boots (spd+1)", "art":[], "actions": [
-		{"name":"Equip", "actions":["equip"]},
-		{"name":"Discard", "actions":["close_card"]} 
-	], "bonus":["speed",1]}
+		{"name":"Equip", "action":["equip"]},
+		{"name":"Discard", "action":["close_card"]} 
+	], "bonus":["speed",1]},
+	{"name":"Snake", "art":["snake"], "actions":[
+		{"name":"Fight (POW:4)", "action":[
+			"check", "power", 4,
+			["Snake guts are messy"],
+			["Fangs hurt", "modify", "hp", -2]
+		]},
+		{"name":"Avoid (SPD:3)", "action":[
+			"check", "speed", 3,
+			["You deftly sidestep it"],
+			["POISONED.", "draw_player_card", 2]
+		]}
+	]}
 ]
 
 func shuffle_decks():
@@ -289,7 +344,7 @@ func shuffle_decks():
 func new_game():
 	current_point_location = "Green Coast"
 	cards = {
-		"Green Coast": [3],
+		"Green Coast": [4, 4, 4, 4],
 		"Tree of Wealth": [1],
 		"Coal City": [0, 0, 0, 0],
 		"Deep Pit": [1, 1, 1, 0],
@@ -301,6 +356,8 @@ func new_game():
 		"speed": [3, 3],
 		"lore": [3, 3]
 	}
+	gp = 2
+	hp = 3
 	equipment = []
 
 func save_game():
