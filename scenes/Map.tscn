@@ -41,6 +41,10 @@ location_name = "Coal City"
 position = Vector2( 22, 30 )
 location_name = "Green Coast"
 
+[node name="Fairway Inn" parent="ScrollMap/points" instance=ExtResource( 5 )]
+position = Vector2( 45, 30 )
+location_name = "Fairway Inn"
+
 [node name="Deep Pit" parent="ScrollMap/points" instance=ExtResource( 5 )]
 position = Vector2( 27, 40 )
 location_name = "Deep Pit"

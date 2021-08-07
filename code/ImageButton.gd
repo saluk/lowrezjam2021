@@ -9,11 +9,13 @@ func _ready():
 
 func _mouse_enter():
 	material.blend_mode = BLEND_MODE_PREMULT_ALPHA
-	get_node("/root/Node2D/Interface/Control/PointLabel").text = button_action
+	if has_node("/root/Node2D/Interface/Control/PointLabel"):
+		get_node("/root/Node2D/Interface/Control/PointLabel").text = button_action
 	
 func _mouse_exit():
 	material.blend_mode = BLEND_MODE_MIX
-	get_node("/root/Node2D/Interface/Control/PointLabel").text = ""
+	if has_node("/root/Node2D/Interface/Control/PointLabel"):
+		get_node("/root/Node2D/Interface/Control/PointLabel").text = ""
 
 func _process(delta):
 	Globals.safe_call(self, button_action+"_visible")
@@ -21,7 +23,7 @@ func _process(delta):
 	#visible = true
 	
 func walk_visible():
-	if Globals.destination:
+	if Globals.can_walk():
 		visible = true
 	else:
 		visible = false

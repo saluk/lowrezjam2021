@@ -11,7 +11,8 @@ var icon = "active"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	Globals.register_mouse_handler(self, get_node("Area2D"))
+	pass
+	#Globals.register_mouse_handler(self, get_node("Area2D"))
 	
 func _mouse_enter():
 	get_node("/root/Node2D/Interface/Control/PointLabel").text = ">Status<"

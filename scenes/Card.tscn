@@ -1,20 +1,15 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/MouseCursor.tscn" type="PackedScene" id=1]
 [ext_resource path="res://code/Card.gd" type="Script" id=2]
 [ext_resource path="res://theme.tres" type="Theme" id=3]
-[ext_resource path="res://art/cards/bazaar.png" type="Texture" id=4]
+[ext_resource path="res://art/black.png" type="Texture" id=4]
+[ext_resource path="res://art/cards/card_back.png" type="Texture" id=5]
 
 [node name="Node2D" type="Node2D"]
-position = Vector2( 25, 25 )
-rotation = -0.541052
-scale = Vector2( 0.1, 0.1 )
+position = Vector2( 64, 0 )
+scale = Vector2( -1, 1 )
 script = ExtResource( 2 )
-
-[node name="MapBackground" type="Sprite" parent="."]
-position = Vector2( 89.579, 65.462 )
-rotation = 0.532325
-scale = Vector2( 100, 100 )
 
 [node name="Background" type="Sprite" parent="."]
 position = Vector2( 32, 32 )
@@ -58,3 +53,7 @@ __meta__ = {
 
 [node name="Viewport" type="Viewport" parent="."]
 size = Vector2( 64, 64 )
+
+[node name="CardBack" type="Sprite" parent="."]
+position = Vector2( 32, 32 )
+texture = ExtResource( 5 )

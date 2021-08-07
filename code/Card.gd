@@ -33,17 +33,23 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if position.x == 0 and position.y == 0 and rotation_degrees == 0 and scale.x == 1 and scale.y == 1:
+		get_node("Interface/Control/MouseCursor").visible = true
+		return
+	get_node("Interface/Control/MouseCursor").visible = false
 	if rotation_degrees < 0:
 		rotation_degrees += 1
 	if scale.x < 1:
-		scale.x += 0.025
+		scale.x += 0.032
+	if scale.x > 0:
+		get_node("CardBack").visible = false
 	if scale.x > 1: scale.x = 1
 	if scale.y < 1:
 		scale.y += 0.025
 	if scale.y > 1: scale.y = 1
 	if position.x > 0:
-		position.x -= 0.5
+		position.x -= 1
 	if position.y > 0:
-		position.y -= 0.5
+		position.y -= 1
 	position.x = int(position.x)
 	position.y = int(position.y)

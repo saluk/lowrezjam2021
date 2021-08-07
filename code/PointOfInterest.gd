@@ -57,9 +57,12 @@ func _draw():
 		return
 	if not Globals.destination:
 		return
+	var color = Color(0,0,0)
+	if not Globals.can_walk():
+		color = Color(1,0,0)
 	draw_line(
 		Vector2(0, 0), 
 		Globals.destination.position - position, 
-		Color(0, 0, 0), 
+		color, 
 		1.0, 
 		false)

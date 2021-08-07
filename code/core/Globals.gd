@@ -1,6 +1,7 @@
 extends Node
 
 export var travel_speed = 10 # 2
+export var distance_to_travel_per_speed = 5
 
 var mouse_over
 var icon_count = 0
@@ -8,10 +9,19 @@ var over_list = []
 
 var handlers = []
 
-var save_keys = ["current_point_location", "cards"]
+var save_keys = ["current_point_location", "cards", "stats"]
 
 var current_point_location = "Green Coast" # save
 var cards = {} # save
+var stats = {} # save
+var equipment = {} # save
+var stat_descriptions = {
+	"guile":"outsmart\npeople",
+	"power":"win battles",
+	"speed":"km to walk\nbefore rest",
+	"lore":"solve puzzles"
+}
+
 var current_point = null
 
 var mouse_clicked = false
@@ -22,8 +32,7 @@ var current_card = null
 var events = []
 
 func _init():
-	if not load_game():
-		new_game()
+	new_game()
 
 func _ready():
 	pause_mode = Node.PAUSE_MODE_PROCESS
@@ -77,6 +86,25 @@ func set_destination(point):
 	self.destination = point
 	self.destination.activate()
 
+func get_distance():
+	if not self.destination:
+		return -1
+	if not self.current_point:
+		return -1
+	var pixels = (destination.position - current_point.position).length()
+	return int(pixels/distance_to_travel_per_speed)
+
+# can we walk to the destination from our current point
+func can_walk():
+	var max_dist = stats["speed"][1]
+	var dist = get_distance()
+	if get_distance() < 0:
+		return false
+	print("d:",dist, "md:",max_dist)
+	if dist > max_dist:
+		return false
+	return true
+
 func safe_call(object, method):
 	if object.has_method(method):
 		object.call(method)
@@ -88,6 +116,9 @@ func action_new_game():
 func action_load_game():
 	load_game()
 	change_scene("res://scenes/Map.tscn")
+	
+func action_quit_game():
+	get_viewport().queue_free()
 	
 func action_walk():
 	walk_path = {
@@ -103,6 +134,21 @@ func action_enter():
 func action_close_card():
 	change_scene("res://scenes/Map.tscn")
 	save_game()
+	
+func action_equip():
+	equipment.append(current_card)
+	var stat_key = current_card["bonus"][0]
+	var stat_amount = current_card["bonus"][1]
+	stats[stat_key][0] += stat_amount
+	stats[stat_key][1] += stat_amount
+	events.append(["alert", ["Equipped!"]])
+	action_close_card()
+	
+func action_stats():
+	change_scene("scenes/StatsMenu.tscn")
+	
+func action_close():
+	change_scene("scenes/Map.tscn")
 	
 func _process(delta):
 	if wait_for_alert():
@@ -144,6 +190,8 @@ func change_scene(scene_path):
 	get_tree().change_scene_to(ResourceLoader.load(scene_path))
 	
 func load_card_at(point_name):
+	if not point_name in cards:
+		return
 	var card_stack = cards[point_name]
 	if card_stack:
 		var current_card_index = card_stack.pop_front()
@@ -166,7 +214,15 @@ var card_templates = [
 	{"name":"Alley", "art":["alley"], "actions":[
 			{"name":"Search", "actions":[]},
 			{"name":"Pass", "actions":["close_card"]}
-	]}
+	]},
+	{"name":"Rune Found", "art":["alley"], "actions":[
+		{"name":"Start Over", "actions":["new_game"]},
+		{"name":"Quit", "actions":["quit_game"]}
+	]},
+	{"name":"Boots (spd+1)", "art":[], "actions": [
+		{"name":"Equip", "actions":["equip"]},
+		{"name":"Discard", "actions":["close_card"]} 
+	], "bonus":["speed",1]}
 ]
 
 func shuffle_decks():
@@ -177,11 +233,19 @@ func shuffle_decks():
 func new_game():
 	current_point_location = "Green Coast"
 	cards = {
-		"Green Coast": [],
-		"Tree of Wealth": [1, 1, 1],
+		"Green Coast": [3],
+		"Tree of Wealth": [1],
 		"Coal City": [0, 0, 0, 0],
-		"Deep Pit": [1, 1, 1, 0]
+		"Deep Pit": [1, 1, 1, 0],
+		"Fairway Inn": []
 	}
+	stats = {
+		"guile": [3, 3],
+		"power": [3, 3],
+		"speed": [3, 3],
+		"lore": [3, 3]
+	}
+	equipment = []
 
 func save_game():
 	var save_file = File.new()
@@ -200,5 +264,6 @@ func load_game():
 	while save_file.get_position() < save_file.get_len():
 		var save_dict = parse_json(save_file.get_line())
 		for key in save_keys:
-			set(key, save_dict[key])
+			if key in save_dict:
+				set(key, save_dict[key])
 	return true

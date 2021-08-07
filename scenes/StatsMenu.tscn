@@ -1,0 +1,72 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://theme.tres" type="Theme" id=1]
+[ext_resource path="res://scenes/MouseCursor.tscn" type="PackedScene" id=2]
+[ext_resource path="res://code/StatsMenu.gd" type="Script" id=3]
+[ext_resource path="res://art/exit_icon.png" type="Texture" id=4]
+[ext_resource path="res://scenes/MapButton.tscn" type="PackedScene" id=5]
+[ext_resource path="res://art/black.png" type="Texture" id=6]
+[ext_resource path="res://code/InfoBox.gd" type="Script" id=7]
+
+[node name="Node2D" type="Node2D"]
+pause_mode = 2
+script = ExtResource( 3 )
+
+[node name="Interface" type="Node2D" parent="."]
+
+[node name="Control" type="Control" parent="Interface"]
+margin_right = 64.0
+margin_bottom = 64.0
+mouse_filter = 2
+theme = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MenuLabel" type="Label" parent="Interface/Control"]
+margin_right = 64.0
+margin_bottom = 18.0
+text = "Stats"
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CloseButton" parent="Interface/Control" instance=ExtResource( 5 )]
+position = Vector2( 6, 5 )
+texture = ExtResource( 4 )
+button_action = "close"
+
+[node name="StatLines" type="Control" parent="Interface/Control"]
+margin_right = 40.0
+margin_bottom = 40.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MouseCursor" parent="Interface/Control" instance=ExtResource( 2 )]
+
+[node name="InfoBox" type="Node2D" parent="Interface/Control"]
+visible = false
+position = Vector2( 32, 41 )
+script = ExtResource( 7 )
+
+[node name="Info" type="Sprite" parent="Interface/Control/InfoBox"]
+position = Vector2( 0, -24 )
+scale = Vector2( 1, 0.244 )
+texture = ExtResource( 6 )
+
+[node name="Label" type="Label" parent="Interface/Control/InfoBox"]
+margin_left = -31.0
+margin_top = -33.0
+margin_right = 12.0
+margin_bottom = -18.0
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_constants/line_spacing = -1
+text = "how many km
+to walk"
+__meta__ = {
+"_edit_use_anchors_": false
+}
