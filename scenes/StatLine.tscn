@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://art/dice3d.png" type="Texture" id=1]
 [ext_resource path="res://code/StatLine.gd" type="Script" id=2]
 [ext_resource path="res://theme.tres" type="Theme" id=3]
+[ext_resource path="res://code/StatValue.gd" type="Script" id=4]
 
 [node name="StatLine" type="Label"]
 margin_right = 30.0
@@ -24,7 +25,9 @@ texture = ExtResource( 1 )
 margin_left = 40.0
 margin_right = 80.0
 margin_bottom = 9.0
+mouse_filter = 0
 text = ": 4/5"
+script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

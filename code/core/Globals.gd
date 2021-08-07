@@ -75,7 +75,6 @@ func clear_mouse_over(over):
 		over._mouse_exit()
 	over_list.erase(over)
 	if over_list:
-		print(over_list[-1])
 		get_node("/root/Node2D/Interface/Control/MouseCursor").set_cursor(over_list[-1].icon)
 	else:
 		get_node("/root/Node2D/Interface/Control/MouseCursor").set_cursor("normal")
@@ -100,7 +99,6 @@ func can_walk():
 	var dist = get_distance()
 	if get_distance() < 0:
 		return false
-	print("d:",dist, "md:",max_dist)
 	if dist > max_dist:
 		return false
 	return true

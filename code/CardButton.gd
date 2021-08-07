@@ -15,7 +15,6 @@ func _ready():
 	Globals.register_mouse_handler(self, get_node("Label"))
 
 func _mouse_enter():
-	print("mouse enter")
 	get_node("Label").set("custom_colors/font_color", Color(1, 1, 0, 1))
 	
 func _mouse_exit():

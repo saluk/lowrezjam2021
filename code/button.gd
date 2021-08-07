@@ -20,8 +20,6 @@ func new_state():
 		if not shadow:
 			set("custom_colors/font_color_shadow", Color(0, 0, 0, 1))
 	if not over and shadow != null:
-		print(shadow)
-		print("clear shadow")
 		set("custom_colors/font_color_shadow", null)
 	if bbcode_text != temp_text:
 		bbcode_text = temp_text
@@ -34,7 +32,6 @@ func _mouse_enter():
 func _mouse_exit():
 	#get_node("../../MouseCursor").set_cursor("normal")
 	over = false
-	print("mouse_exit")
 	new_state()
 	
 func _button_mouse_click():
@@ -43,8 +40,6 @@ func _button_mouse_click():
 	new_state()
 	
 func _button_mouse_release():
-	if click and over:
-		print("clicked")
 	click = false
 	new_state()
 
