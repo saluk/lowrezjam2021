@@ -29,7 +29,14 @@ var destination = null
 var walk_path = null
 var current_card = null
 
+# stat check
+var dice_commited = 1
+var stat_checked = "power"
+var rolling_dice = []
+var target_number = 10
+
 var events = []
+var sounds = []
 
 func _init():
 	new_game()
@@ -106,6 +113,14 @@ func can_walk():
 func safe_call(object, method):
 	if object.has_method(method):
 		object.call(method)
+		
+func play_sound(sound, seek_pos):
+	var stream = AudioStreamPlayer.new()
+	stream.stream = ResourceLoader.load(sound)
+	stream.playing = true
+	stream.seek(seek_pos)
+	add_child(stream)
+	sounds.append(stream)
 
 func action_new_game():
 	new_game()
@@ -133,6 +148,32 @@ func action_close_card():
 	change_scene("res://scenes/Map.tscn")
 	save_game()
 	
+func action_add_dice():
+	dice_commited += 1
+	if dice_commited > stats[stat_checked][0]:
+		dice_commited = stats[stat_checked][0]
+	if dice_commited > 6:
+		dice_commited = 6
+
+func action_remove_dice():
+	dice_commited -= 1
+	if dice_commited < 0:
+		dice_commited = 0
+		
+func action_roll_dice():
+	stats[stat_checked][0] -= dice_commited
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	rolling_dice = []
+	for i in dice_commited:
+		# value rolled, time to roll
+		rolling_dice.append([rng.randi_range(1,6), rng.randf_range(2.0,3.0)])
+	if dice_commited == 0:
+		rolling_dice.append([1,3.0])
+	for die in rolling_dice:
+		play_sound("sounds/dice.wav", 3.0-die[1])
+	dice_commited = 0
+	
 func action_equip():
 	equipment.append(current_card)
 	var stat_key = current_card["bonus"][0]
@@ -148,7 +189,24 @@ func action_stats():
 func action_close():
 	change_scene("scenes/Map.tscn")
 	
+func action_end_stat_check():
+	rolling_dice = []
+	dice_commited = 0
+	#get_tree().reload_current_scene()
+	change_scene("scenes/SkillCheck.tscn")
+
+func process_sounds():
+	var next_sounds = []
+	for sound in sounds:
+		if not sound.playing:
+			sound.queue_free()
+		else:
+			next_sounds.append(sound)
+	sounds = next_sounds
+			
+
 func _process(delta):
+	process_sounds()
 	if wait_for_alert():
 		return
 	if process_event():
