@@ -15,6 +15,11 @@ func drag_end():
 
 func _ready():
 	Globals.register_mouse_handler(self, get_node("Area2D"))
+	get_node("/root/MouseCursor").connect(
+		"mouse_cursor_moved",
+		self,
+		"_on_MouseCursor_mouse_cursor_moved"
+	)
 
 func _input(ev):
 	if ev is InputEventMouseButton:

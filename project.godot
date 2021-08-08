@@ -33,6 +33,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Globals="*res://code/core/Globals.gd"
+MouseCursor="*res://scenes/MouseCursor.tscn"
 
 [display]
 

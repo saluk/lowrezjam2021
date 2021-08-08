@@ -79,7 +79,7 @@ func set_mouse_over(over):
 	over_list.append(over)
 	if over.has_method("_mouse_enter"):
 		over._mouse_enter()
-	get_node("/root/Node2D/Interface/Control/MouseCursor").set_cursor(over.icon)
+	get_node("/root/MouseCursor").set_cursor(over.icon)
 	
 func clear_mouse_over(over):
 	mouse_over = null
@@ -89,9 +89,9 @@ func clear_mouse_over(over):
 		over._mouse_exit()
 	over_list.erase(over)
 	if over_list:
-		get_node("/root/Node2D/Interface/Control/MouseCursor").set_cursor(over_list[-1].icon)
+		get_node("/root/MouseCursor").set_cursor(over_list[-1].icon)
 	else:
-		get_node("/root/Node2D/Interface/Control/MouseCursor").set_cursor("normal")
+		get_node("/root/MouseCursor").set_cursor("normal")
 
 func set_destination(point):
 	if self.destination:

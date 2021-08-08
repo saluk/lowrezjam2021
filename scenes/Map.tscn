@@ -57,6 +57,7 @@ position = Vector2( 13, 19 )
 
 [node name="Node2D" parent="." instance=ExtResource( 7 )]
 
-[connection signal="mouse_cursor_moved" from="Interface/Control/MouseCursor" to="ScrollMap" method="_on_MouseCursor_mouse_cursor_moved"]
-
 [editable path="Interface"]
+[editable path="Interface/Control/WalkButton"]
+[editable path="Interface/Control/EnterButton"]
+[editable path="Interface/Control/Stats"]

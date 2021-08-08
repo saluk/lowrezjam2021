@@ -1,7 +1,6 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://theme.tres" type="Theme" id=1]
-[ext_resource path="res://scenes/MouseCursor.tscn" type="PackedScene" id=2]
 [ext_resource path="res://code/StatsMenu.gd" type="Script" id=3]
 [ext_resource path="res://art/exit_icon.png" type="Texture" id=4]
 [ext_resource path="res://scenes/ImageButton.tscn" type="PackedScene" id=5]
@@ -35,9 +34,11 @@ __meta__ = {
 }
 
 [node name="CloseButton" parent="Interface/Control" instance=ExtResource( 5 )]
-position = Vector2( 6, 5 )
-texture = ExtResource( 4 )
+position = Vector2( 5, 5 )
 button_action = "close"
+
+[node name="Foreground" parent="Interface/Control/CloseButton" index="1"]
+texture = ExtResource( 4 )
 
 [node name="StatLines" type="Control" parent="Interface/Control"]
 margin_right = 40.0
@@ -48,8 +49,6 @@ __meta__ = {
 }
 
 [node name="HealthDisplay" parent="Interface/Control" instance=ExtResource( 8 )]
-
-[node name="MouseCursor" parent="Interface/Control" instance=ExtResource( 2 )]
 
 [node name="InfoBox" type="Node2D" parent="Interface/Control"]
 visible = false
@@ -73,3 +72,5 @@ to walk"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[editable path="Interface/Control/CloseButton"]

@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://art/overworld.tres" type="TileSet" id=1]
 [ext_resource path="res://theme.tres" type="Theme" id=2]
 [ext_resource path="res://scenes/worldmap.gd" type="Script" id=3]
-[ext_resource path="res://scenes/MouseCursor.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/CardButton.tscn" type="PackedScene" id=5]
 [ext_resource path="res://art/fade.png" type="Texture" id=6]
 
@@ -32,8 +31,6 @@ theme = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="MouseCursor" parent="Interface/Control" instance=ExtResource( 4 )]
 
 [node name="MenuLabel" type="Label" parent="Interface/Control"]
 margin_right = 64.0

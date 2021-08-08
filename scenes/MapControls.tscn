@@ -1,7 +1,6 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://theme.tres" type="Theme" id=1]
-[ext_resource path="res://scenes/MouseCursor.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/HoverLabel.gd" type="Script" id=3]
 [ext_resource path="res://scenes/ImageButton.tscn" type="PackedScene" id=4]
 [ext_resource path="res://art/walk_icon.png" type="Texture" id=5]
@@ -47,22 +46,18 @@ texture = ExtResource( 5 )
 
 [node name="Stats" parent="Control" instance=ExtResource( 4 )]
 material = SubResource( 2 )
-position = Vector2( 12, 5 )
+position = Vector2( 5, 5 )
 button_action = "stats"
 
 [node name="Foreground" parent="Control/Stats" index="1"]
 texture = ExtResource( 7 )
 
-[node name="MouseCursor" parent="Control" instance=ExtResource( 2 )]
-
 [node name="PointLabel" type="Label" parent="Control"]
-visible = false
 margin_top = 43.0
 margin_right = 64.0
 margin_bottom = 64.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
-text = "Too Far to walk to the market"
 align = 1
 valign = 2
 autowrap = true

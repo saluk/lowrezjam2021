@@ -24,6 +24,8 @@ func _clicked():
 	if not "action" in button_action:
 		return
 	var action:Array = button_action["action"]
+	if not action:
+		return
 	var method = action[0]
 	var arguments = action.slice(1, action.size())
 	var caller
