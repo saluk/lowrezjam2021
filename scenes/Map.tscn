@@ -55,10 +55,6 @@ position = Vector2( 13, 19 )
 
 [node name="Interface" parent="." instance=ExtResource( 4 )]
 
-[node name="MenuLabel" parent="Interface/Control" index="5"]
-margin_bottom = 9.0
-text = "travel"
-
 [node name="Node2D" parent="." instance=ExtResource( 7 )]
 
 [connection signal="mouse_cursor_moved" from="Interface/Control/MouseCursor" to="ScrollMap" method="_on_MouseCursor_mouse_cursor_moved"]

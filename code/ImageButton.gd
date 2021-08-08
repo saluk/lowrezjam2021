@@ -1,29 +1,34 @@
-extends Sprite
+extends Node2D
 
 var icon = "active"
 export var button_action = "walk"
 export var node_text_path = "/root/Node2D/Interface/Control/PointLabel"
 export var hover_description = ""
 export var use_info_box = false
+export var disabled_text = "Too Far To Walk"
+
+var disabled = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Globals.register_mouse_handler(self, get_node("Area2D"))
 	
 func get_text():
+	if disabled and disabled_text:
+		return disabled_text
 	if hover_description:
 		return hover_description
 	return button_action
 
 func _mouse_enter():
-	material.blend_mode = BLEND_MODE_PREMULT_ALPHA
+	$Background.frame = 1
 	if has_node(node_text_path):
 		get_node(node_text_path).text = get_text()
 		if use_info_box:
 			get_node("/root/Node2D/Interface/Control/InfoBox").show = true
 	
 func _mouse_exit():
-	material.blend_mode = BLEND_MODE_MIX
+	$Background.frame = 0
 	if has_node(node_text_path):
 		get_node(node_text_path).text = ""
 		if use_info_box:
@@ -32,14 +37,23 @@ func _mouse_exit():
 func _process(delta):
 	Globals.safe_call(self, button_action+"_visible")
 	Globals.safe_call(self, button_action+"_position")
+	Globals.safe_call(self, button_action+"_disabled")
+	if disabled:
+		$DisabledOverlay.visible = true
+	else:
+		$DisabledOverlay.visible = false
 	
 func walk_visible():
-	if Globals.can_walk():
+	if Globals.destination and not Globals.walk_path:
 		visible = true
 	else:
 		visible = false
-	if Globals.walk_path:
-		visible = false
+		
+func walk_disabled():
+	if not Globals.can_walk():
+		disabled = true
+	else:
+		disabled = false
 		
 func add_dice_visible():
 	visible = Globals.rolling_dice.size() == 0
@@ -73,4 +87,6 @@ func point_position(point):
 		position = point.global_position + dir
 
 func _clicked():
+	if disabled:
+		return
 	Globals.call("action_" + button_action)

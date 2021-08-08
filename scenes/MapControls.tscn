@@ -3,8 +3,8 @@
 [ext_resource path="res://theme.tres" type="Theme" id=1]
 [ext_resource path="res://scenes/MouseCursor.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/HoverLabel.gd" type="Script" id=3]
-[ext_resource path="res://scenes/MapButton.tscn" type="PackedScene" id=4]
-[ext_resource path="res://art/enter_icon.png" type="Texture" id=5]
+[ext_resource path="res://scenes/ImageButton.tscn" type="PackedScene" id=4]
+[ext_resource path="res://art/walk_icon.png" type="Texture" id=5]
 [ext_resource path="res://code/DistanceLabel.gd" type="Script" id=6]
 [ext_resource path="res://art/stats_icon.png" type="Texture" id=7]
 
@@ -24,9 +24,9 @@ __meta__ = {
 }
 
 [node name="Distance" type="Label" parent="Control"]
-margin_top = 46.0
+margin_top = 34.0
 margin_right = 40.0
-margin_bottom = 55.0
+margin_bottom = 43.0
 text = "3m"
 script = ExtResource( 6 )
 __meta__ = {
@@ -35,37 +35,42 @@ __meta__ = {
 
 [node name="WalkButton" parent="Control" instance=ExtResource( 4 )]
 
+[node name="Foreground" parent="Control/WalkButton" index="1"]
+texture = ExtResource( 5 )
+
 [node name="EnterButton" parent="Control" instance=ExtResource( 4 )]
 material = SubResource( 1 )
-texture = ExtResource( 5 )
 button_action = "enter"
+
+[node name="Foreground" parent="Control/EnterButton" index="1"]
+texture = ExtResource( 5 )
 
 [node name="Stats" parent="Control" instance=ExtResource( 4 )]
 material = SubResource( 2 )
-position = Vector2( 5, 5 )
-texture = ExtResource( 7 )
+position = Vector2( 12, 5 )
 button_action = "stats"
+
+[node name="Foreground" parent="Control/Stats" index="1"]
+texture = ExtResource( 7 )
 
 [node name="MouseCursor" parent="Control" instance=ExtResource( 2 )]
 
-[node name="MenuLabel" type="Label" parent="Control"]
+[node name="PointLabel" type="Label" parent="Control"]
+visible = false
+margin_top = 43.0
 margin_right = 64.0
-margin_bottom = 18.0
-text = "Where to?"
+margin_bottom = 64.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Too Far to walk to the market"
 align = 1
+valign = 2
 autowrap = true
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PointLabel" type="Label" parent="Control"]
-margin_top = 55.0
-margin_right = 64.0
-margin_bottom = 64.0
-align = 1
-autowrap = true
-script = ExtResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[editable path="Control/WalkButton"]
+[editable path="Control/EnterButton"]
+[editable path="Control/Stats"]
