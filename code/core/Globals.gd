@@ -7,6 +7,8 @@ var mouse_over
 var icon_count = 0
 var over_list = []
 
+var alert = 0
+
 var handlers = []
 
 var save_keys = ["current_point_location", "cards", "stats", "gp", "hp"]
@@ -47,7 +49,6 @@ func _init():
 
 func _ready():
 	pause_mode = Node.PAUSE_MODE_PROCESS
-	shuffle_decks()
 
 func get_player_pos():
 	if not walk_path and current_point:
@@ -128,15 +129,14 @@ func play_sound(sound, seek_pos):
 	
 func card_result(result):
 	var text = result[0]
-	var action = result.slice(1,result.size())
-	if not action.size() > 0:
-		return
-	var method = action[0]
-	var arguments = action.slice(1,result.size())
-	if arguments.size() > 0:
-		call("action_"+method, arguments)
-	else:
-		call("action_"+method)
+	var sub_actions = result.slice(1,result.size())
+	for action in sub_actions:
+		var method = action[0]
+		var arguments = action.slice(1,result.size())
+		if arguments.size() > 0:
+			call("action_"+method, arguments)
+		else:
+			call("action_"+method)
 		
 func action_draw_player_card(arguments):
 	pass
@@ -265,16 +265,23 @@ func _process(delta):
 func process_event():
 	if not events:
 		return
-	var next_event = events.pop_back()
+	var next_event = events.pop_front()
 	callv(next_event[0], next_event[1])
 
 func alert(message):
+	alert = 1
 	var alert_scene = ResourceLoader.load("scenes/Alert.tscn").instance()
 	alert_scene.get_node("Control/Label").text = message
 	get_viewport().add_child(alert_scene)
 	
 func wait_for_alert():
-	if get_node_or_null("/root/Alert"):
+	if alert > 0:
+		if get_node_or_null("/root/Alert"):
+			alert += 1
+		else:
+			if alert > 1:
+				alert = 0
+				print("alert is zero")
 		return true
 	else:
 		get_tree().paused = false
@@ -300,7 +307,7 @@ func load_card_at(point_name):
 			"name":"Nothing Here",
 			"art":[], 
 			"actions":[
-				{"name":"Ok","actions":["close_card"]}
+				{"name":"Ok","action":["close_card"]}
 			]
 		}
 	change_scene("res://scenes/Card.tscn")
@@ -309,31 +316,38 @@ var card_templates = [
 	{"name":"Shop", "art":["bazaar"], "actions":[
 			{"name":"Haggle", "action":[]},
 			{"name":"Leave", "action":["close_card"]}
-	]},
+	]}, # 0
 	{"name":"Alley", "art":["alley"], "actions":[
 			{"name":"Search", "action":[]},
 			{"name":"Pass", "action":["close_card"]}
-	]},
+	]}, # 1
 	{"name":"Rune Found", "art":["alley"], "actions":[
 		{"name":"Start Over", "action":["new_game"]},
 		{"name":"Quit", "action":["quit_game"]}
-	]},
+	]}, # 2
 	{"name":"Boots (spd+1)", "art":[], "actions": [
 		{"name":"Equip", "action":["equip"]},
 		{"name":"Discard", "action":["close_card"]} 
-	], "bonus":["speed",1]},
+	], "bonus":["speed",1]}, # 3
 	{"name":"Snake", "art":["snake"], "actions":[
 		{"name":"Fight (POW:4)", "action":[
 			"check", "power", 4,
 			["Snake guts are messy"],
-			["Fangs hurt", "modify", "hp", -2]
+			["Fangs hurt", ["modify", "hp", -2]]
 		]},
 		{"name":"Avoid (SPD:3)", "action":[
 			"check", "speed", 3,
 			["You deftly sidestep it"],
-			["POISONED.", "draw_player_card", 2]
+			["POISONED.", ["draw_player_card", 2]]
 		]}
-	]}
+	]}, # 4
+	{"name":"Rune Riga", "art":["rune"], "actions":[
+		{"name":"memorize", "action": [
+			"check", "lore", 12,
+			["The rune is in your heart", ["draw_player_card", 5]],
+			["You forget the rune"]
+		]}		
+	]} # 5
 ]
 
 func shuffle_decks():
@@ -344,7 +358,7 @@ func shuffle_decks():
 func new_game():
 	current_point_location = "Green Coast"
 	cards = {
-		"Green Coast": [4, 4, 4, 4],
+		"Green Coast": [5, 4, 4, 4],
 		"Tree of Wealth": [1],
 		"Coal City": [0, 0, 0, 0],
 		"Deep Pit": [1, 1, 1, 0],
@@ -359,6 +373,7 @@ func new_game():
 	gp = 2
 	hp = 3
 	equipment = []
+	shuffle_decks()
 
 func save_game():
 	var save_file = File.new()

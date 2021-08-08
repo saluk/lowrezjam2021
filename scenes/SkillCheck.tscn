@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://art/exit_icon.png" type="Texture" id=1]
 [ext_resource path="res://art/black.png" type="Texture" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://art/roll_icon.png" type="Texture" id=13]
 [ext_resource path="res://code/RollingTheDice.gd" type="Script" id=14]
 [ext_resource path="res://art/remove_icon.png" type="Texture" id=15]
+[ext_resource path="res://scenes/HealthDisplay.tscn" type="PackedScene" id=16]
 
 [sub_resource type="CanvasItemMaterial" id=1]
 
@@ -176,3 +177,6 @@ autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Node2D" parent="." instance=ExtResource( 16 )]
+position = Vector2( 0, 20 )
