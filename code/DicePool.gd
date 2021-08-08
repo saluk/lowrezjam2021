@@ -24,5 +24,5 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	var stat = Globals.stats[Globals.stat_checked]
-	var dp = Globals.dice_commited
+	var dp = Globals.dice_commited - 1
 	text = str(stat[0]-dp) + "/" + str(stat[1])

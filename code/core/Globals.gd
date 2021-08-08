@@ -16,7 +16,7 @@ var save_keys = ["current_point_location", "cards", "stats", "gp", "hp"]
 var current_point_location = "Green Coast" # save
 var cards = {} # save
 var stats = {} # save
-var equipment = {} # save
+var equipment = [] # save
 var hp = 3 # save
 var gp = 2 # save
 var stat_descriptions = {
@@ -139,7 +139,21 @@ func card_result(result):
 			call("action_"+method)
 		
 func action_draw_player_card(arguments):
-	pass
+	var card_index = arguments[0]
+	equipment.append(card_templates[card_index])
+	if get_rune_count() >= 1:
+		win()
+
+func win():
+	alert("You Won")
+	events.append(["change_scene", ["scenes/intro.tscn"]])
+
+func get_rune_count():
+	var total = 0
+	for card in equipment:
+		if card["name"].begins_with("Rune"):
+			total += 1
+		return total
 	
 func action_modify(arguments):
 	var field = arguments[0]
@@ -150,6 +164,12 @@ func action_modify(arguments):
 		set(field, 0)
 		if has_method("_"+field+"_below_zero"):
 			call("_"+field+"_below_zero")
+			
+func action_stat_up(arguments):
+	var stat = arguments[0]
+	var amount = arguments[1]
+	stats[stat] = [stats[stat][0] + amount, stats[stat][1] + amount]
+	alert(stat+" up!")
 			
 func _hp_below_zero():
 	events.append(["alert", ["Game Over!"]])
@@ -183,26 +203,24 @@ func action_close_card():
 	
 func action_add_dice():
 	dice_commited += 1
-	if dice_commited > stats[stat_checked][0]:
-		dice_commited = stats[stat_checked][0]
+	if dice_commited > stats[stat_checked][0] + 1:
+		dice_commited = stats[stat_checked][0] + 1
 	if dice_commited > 6:
 		dice_commited = 6
 
 func action_remove_dice():
 	dice_commited -= 1
-	if dice_commited < 0:
-		dice_commited = 0
+	if dice_commited < 1:
+		dice_commited = 1
 		
 func action_roll_dice():
-	stats[stat_checked][0] -= dice_commited
+	stats[stat_checked][0] -= dice_commited - 1
 	var rng = RandomNumberGenerator.new()
 	rng.randomize()
 	rolling_dice = []
 	for i in dice_commited:
 		# value rolled, time to roll
 		rolling_dice.append([rng.randi_range(1,6), rng.randf_range(2.0,3.0)])
-	if dice_commited == 0:
-		rolling_dice.append([1,3.0])
 	for die in rolling_dice:
 		play_sound("sounds/dice.wav", 3.0-die[1])
 	dice_commited = 0
@@ -224,12 +242,12 @@ func action_close():
 	
 func action_end_stat_check():
 	rolling_dice = []
-	dice_commited = 0
+	dice_commited = 1
 	change_scene("scenes/Map.tscn")
 	
 func action_check(arguments):
 	rolling_dice = []
-	dice_commited = 0
+	dice_commited = 1
 	stat_checked = arguments[0]
 	target_number = arguments[1]
 	check_win = arguments[2]
@@ -332,7 +350,7 @@ var card_templates = [
 	{"name":"Snake", "art":["snake"], "actions":[
 		{"name":"Fight (POW:4)", "action":[
 			"check", "power", 4,
-			["Snake guts are messy"],
+			["Snake guts are messy", ["stat_up", "speed", 1]],
 			["Fangs hurt", ["modify", "hp", -2]]
 		]},
 		{"name":"Avoid (SPD:3)", "action":[
@@ -358,7 +376,7 @@ func shuffle_decks():
 func new_game():
 	current_point_location = "Green Coast"
 	cards = {
-		"Green Coast": [5, 4, 4, 4],
+		"Green Coast": [5, 4, 4, 4, 4, 4, 4, 4],
 		"Tree of Wealth": [1],
 		"Coal City": [0, 0, 0, 0],
 		"Deep Pit": [1, 1, 1, 0],
