@@ -11,6 +11,7 @@ var alert = 0
 
 var handlers = []
 
+var config:Config
 var save_keys = ["current_point_location", "cards", "stats", "gp", "hp"]
 
 var current_point_location = "Green Coast" # save
@@ -45,6 +46,7 @@ var events = []
 var sounds = []
 
 func _init():
+	config = Config.new()
 	new_game()
 
 func _ready():
@@ -141,7 +143,8 @@ func card_result(result):
 func action_draw_player_card(arguments):
 	var card_index = arguments[0]
 	equipment.append(card_templates[card_index])
-	if get_rune_count() >= 1:
+	print(get_rune_count(), ", ", config.get("rune_count"))
+	if get_rune_count() >= config.get("rune_count"):
 		win()
 
 func win():
@@ -153,7 +156,7 @@ func get_rune_count():
 	for card in equipment:
 		if card["name"].begins_with("Rune"):
 			total += 1
-		return total
+	return total
 	
 func action_modify(arguments):
 	var field = arguments[0]
@@ -361,7 +364,7 @@ var card_templates = [
 	]}, # 4
 	{"name":"Rune Riga", "art":["rune"], "actions":[
 		{"name":"memorize", "action": [
-			"check", "lore", 12,
+			"check", "lore", 1,
 			["The rune is in your heart", ["draw_player_card", 5]],
 			["You forget the rune"]
 		]}		
@@ -376,7 +379,7 @@ func shuffle_decks():
 func new_game():
 	current_point_location = "Green Coast"
 	cards = {
-		"Green Coast": [5, 4, 4, 4, 4, 4, 4, 4],
+		"Green Coast": [5, 5, 5, 5],
 		"Tree of Wealth": [1],
 		"Coal City": [0, 0, 0, 0],
 		"Deep Pit": [1, 1, 1, 0],
