@@ -17,7 +17,10 @@ var save_keys = ["current_point_location", "cards", "stats", "gp", "hp"]
 var current_point_location = "Green Coast" # save
 var cards = {} # save
 var stats = {} # save
-var equipment = [] # save
+var equipment = [{"name":"Boots (spd+1)", "art":[], "actions": [
+		{"name":"Equip", "action":["equip"]},
+		{"name":"Discard", "action":["close_card"]} 
+	], "bonus":["speed",1], "icon":"boots"}] # save
 var hp = 3 # save
 var gp = 2 # save
 var stat_descriptions = {
@@ -62,8 +65,8 @@ func get_player_pos():
 	return walk_path["start"].position + prog_vec
 
 func _input(ev):
-	if wait_for_alert():
-		return
+	#if wait_for_alert():
+	#	return
 	if ev is InputEventMouseButton:
 		if ev.pressed:
 			if over_list and over_list[-1].has_method("_clicked"):
@@ -88,7 +91,7 @@ func clear_mouse_over(over):
 	if over.has_method("_mouse_exit"):
 		over._mouse_exit()
 	over_list.erase(over)
-	if over_list:
+	if over_list and over_list[-1]:
 		get_node("/root/MouseCursor").set_cursor(over_list[-1].icon)
 	else:
 		get_node("/root/MouseCursor").set_cursor("normal")
@@ -143,13 +146,13 @@ func card_result(result):
 func action_draw_player_card(arguments):
 	var card_index = arguments[0]
 	equipment.append(card_templates[card_index])
-	print(get_rune_count(), ", ", config.get("rune_count"))
-	if get_rune_count() >= config.get("rune_count"):
-		win()
 
-func win():
-	alert("You Won")
-	events.append(["change_scene", ["scenes/intro.tscn"]])
+func won_game():
+	if get_rune_count() >= config.get("rune_count"):
+		alert("You have collected all of the runes!")
+		alert("As you repeat them aloud, a portal appears.")
+		alert("Your adventures have come to an end - for now.")
+		events.append(["change_scene", ["scenes/intro.tscn"]])
 
 func get_rune_count():
 	var total = 0
@@ -162,7 +165,6 @@ func action_modify(arguments):
 	var field = arguments[0]
 	var amount = arguments[1]
 	set(field, get(field) + amount)
-	print("modified "+field+" "+str(get(field)))
 	if get(field) <= 0:
 		set(field, 0)
 		if has_method("_"+field+"_below_zero"):
@@ -218,15 +220,25 @@ func action_remove_dice():
 		
 func action_roll_dice():
 	stats[stat_checked][0] -= dice_commited - 1
-	var rng = RandomNumberGenerator.new()
-	rng.randomize()
 	rolling_dice = []
 	for i in dice_commited:
-		# value rolled, time to roll
-		rolling_dice.append([rng.randi_range(1,6), rng.randf_range(2.0,3.0)])
-	for die in rolling_dice:
-		play_sound("sounds/dice.wav", 3.0-die[1])
+		add_rolling_die()
 	dice_commited = 0
+	
+func add_rolling_die():
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	if rolling_dice.size() >= 6:
+		return null
+	# value rolled, time to roll
+	#var die = [rng.randi_range(1,6), rng.randf_range(2.0,3.0)]
+	var die = [6, 1]
+	rolling_dice.append(die)
+	play_sound("sounds/dice.wav", 3.0-die[1])
+	return die
+	
+func action_close_alert():
+	get_node("/root/Alert").fade_dir = -1
 	
 func action_equip():
 	equipment.append(current_card)
@@ -239,6 +251,9 @@ func action_equip():
 	
 func action_stats():
 	change_scene("scenes/StatsMenu.tscn")
+	
+func action_gear():
+	change_scene("scenes/GearMenu.tscn")
 	
 func action_close():
 	change_scene("scenes/Map.tscn")
@@ -290,6 +305,9 @@ func process_event():
 	callv(next_event[0], next_event[1])
 
 func alert(message):
+	if alert > 0:
+		events.append(["alert", [message]])
+		return
 	alert = 1
 	var alert_scene = ResourceLoader.load("scenes/Alert.tscn").instance()
 	alert_scene.get_node("Control/Label").text = message
@@ -302,14 +320,11 @@ func wait_for_alert():
 		else:
 			if alert > 1:
 				alert = 0
-				print("alert is zero")
 		return true
 	else:
 		get_tree().paused = false
 		
 func change_scene(scene_path):
-	print("change scene to "+scene_path)
-	print(get_tree().paused)
 	over_list = []
 	handlers = []
 	current_point = null
@@ -349,7 +364,7 @@ var card_templates = [
 	{"name":"Boots (spd+1)", "art":[], "actions": [
 		{"name":"Equip", "action":["equip"]},
 		{"name":"Discard", "action":["close_card"]} 
-	], "bonus":["speed",1]}, # 3
+	], "bonus":["speed",1], "icon":"boots"}, # 3
 	{"name":"Snake", "art":["snake"], "actions":[
 		{"name":"Fight (POW:4)", "action":[
 			"check", "power", 4,
@@ -379,7 +394,7 @@ func shuffle_decks():
 func new_game():
 	current_point_location = "Green Coast"
 	cards = {
-		"Green Coast": [5, 5, 5, 5],
+		"Green Coast": [3],
 		"Tree of Wealth": [1],
 		"Coal City": [0, 0, 0, 0],
 		"Deep Pit": [1, 1, 1, 0],
@@ -393,7 +408,7 @@ func new_game():
 	}
 	gp = 2
 	hp = 3
-	equipment = []
+	#equipment = []
 	shuffle_decks()
 
 func save_game():

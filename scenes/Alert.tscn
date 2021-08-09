@@ -1,10 +1,20 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://theme.tres" type="Theme" id=1]
 [ext_resource path="res://code/Alert.gd" type="Script" id=2]
+[ext_resource path="res://art/exit_icon.png" type="Texture" id=3]
+[ext_resource path="res://scenes/ImageButton.tscn" type="PackedScene" id=4]
+
+[sub_resource type="OpenSimplexNoise" id=1]
+
+[sub_resource type="NoiseTexture" id=2]
+width = 64
+height = 64
+noise = SubResource( 1 )
 
 [node name="Alert" type="Node2D"]
 pause_mode = 2
+script = ExtResource( 2 )
 
 [node name="Control" type="Control" parent="."]
 margin_right = 64.0
@@ -14,14 +24,60 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="Control"]
-margin_left = 83.0
-margin_top = 23.0
-margin_right = 123.0
-margin_bottom = 37.0
-custom_colors/font_color = Color( 1, 0.384314, 0.384314, 1 )
-text = "TEST"
-script = ExtResource( 2 )
+[node name="TextureRect" type="TextureRect" parent="Control"]
+margin_top = 18.0
+margin_right = 64.0
+margin_bottom = 82.0
+mouse_filter = 2
+texture = SubResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Label" type="Label" parent="Control"]
+margin_left = 1.0
+margin_top = 19.0
+margin_right = 62.0
+margin_bottom = 52.0
+custom_colors/font_color = Color( 1, 0.384314, 0.384314, 1 )
+text = "This is a test alert that will be great stuff"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ImageButton" parent="Control" instance=ExtResource( 4 )]
+position = Vector2( 59, 59 )
+button_action = "close_alert"
+node_text_path = "/root/Alert/Control/ImageButton/Label2"
+hover_description = "close"
+
+[node name="Foreground" parent="Control/ImageButton" index="1"]
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" parent="Control/ImageButton/Area2D" index="0"]
+scale = Vector2( 2, 2 )
+
+[node name="Label2" type="Label" parent="Control/ImageButton"]
+visible = false
+margin_left = -34.0
+margin_top = -7.0
+margin_right = -9.0
+margin_bottom = 2.0
+text = "Close"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="ColorRect" parent="Control/ImageButton/Label2"]
+show_behind_parent = true
+margin_right = 25.0
+margin_bottom = 10.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[editable path="Control/ImageButton"]

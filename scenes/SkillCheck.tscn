@@ -162,7 +162,7 @@ position = Vector2( 32, 78 )
 script = ExtResource( 6 )
 
 [node name="Info" type="Sprite" parent="Interface/Control/InfoBox"]
-self_modulate = Color( 1, 1, 1, 0.419608 )
+self_modulate = Color( 1, 1, 1, 0.760784 )
 position = Vector2( 0, -24 )
 scale = Vector2( 1, 0.42 )
 texture = ExtResource( 2 )

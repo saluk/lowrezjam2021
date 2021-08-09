@@ -44,12 +44,20 @@ button_action = "enter"
 [node name="Foreground" parent="Control/EnterButton" index="1"]
 texture = ExtResource( 5 )
 
-[node name="Stats" parent="Control" instance=ExtResource( 4 )]
+[node name="StatsButton" parent="Control" instance=ExtResource( 4 )]
 material = SubResource( 2 )
 position = Vector2( 5, 5 )
 button_action = "stats"
 
-[node name="Foreground" parent="Control/Stats" index="1"]
+[node name="Foreground" parent="Control/StatsButton" index="1"]
+texture = ExtResource( 7 )
+
+[node name="GearButton" parent="Control" instance=ExtResource( 4 )]
+material = SubResource( 2 )
+position = Vector2( 14, 5 )
+button_action = "gear"
+
+[node name="Foreground" parent="Control/GearButton" index="1"]
 texture = ExtResource( 7 )
 
 [node name="PointLabel" type="Label" parent="Control"]
@@ -68,4 +76,5 @@ __meta__ = {
 
 [editable path="Control/WalkButton"]
 [editable path="Control/EnterButton"]
-[editable path="Control/Stats"]
+[editable path="Control/StatsButton"]
+[editable path="Control/GearButton"]

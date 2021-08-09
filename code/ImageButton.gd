@@ -11,7 +11,10 @@ var disabled = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	Globals.register_mouse_handler(self, get_node("Area2D"))
+	Globals.register_mouse_handler(self, get_node("Control"))
+	
+func set_icon(icon):
+	$Foreground.texture = ResourceLoader.load("art/gear/"+icon+".png")
 	
 func get_text():
 	if disabled and disabled_text:
@@ -24,15 +27,17 @@ func _mouse_enter():
 	$Background.frame = 1
 	if has_node(node_text_path):
 		get_node(node_text_path).text = get_text()
+		get_node(node_text_path).visible = true
 		if use_info_box:
-			get_node("/root/Node2D/Interface/Control/InfoBox").show = true
+			get_tree().get_nodes_in_group("InfoBox")[0].show = true
 	
 func _mouse_exit():
 	$Background.frame = 0
 	if has_node(node_text_path):
 		get_node(node_text_path).text = ""
+		get_node(node_text_path).visible = false
 		if use_info_box:
-			get_node("/root/Node2D/Interface/Control/InfoBox").show = false
+			get_tree().get_nodes_in_group("InfoBox")[0].show = false
 
 func _process(delta):
 	Globals.safe_call(self, button_action+"_visible")
@@ -89,4 +94,5 @@ func point_position(point):
 func _clicked():
 	if disabled:
 		return
-	Globals.call("action_" + button_action)
+	if Globals.has_method("action_" + button_action):
+		Globals.call("action_" + button_action)

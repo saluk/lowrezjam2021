@@ -13,6 +13,13 @@ extents = Vector2( 128, 128 )
 
 [node name="Node2D" type="Node2D"]
 
+[node name="Control" type="Control" parent="."]
+margin_right = 64.0
+margin_bottom = 64.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="ScrollMap" type="Node2D" parent="."]
 script = ExtResource( 3 )
 

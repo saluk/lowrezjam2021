@@ -11,7 +11,7 @@ var active = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	Globals.register_mouse_handler(self, get_node("Area2D"))
+	Globals.register_mouse_handler(self, get_node("Control"))
 	
 func is_current_point():
 	return Globals.current_point_location == location_name

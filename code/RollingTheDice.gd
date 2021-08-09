@@ -2,6 +2,11 @@ extends Node2D
 
 var have_dice = false
 var stopped = false
+var x
+var y
+var alerted = false
+var left = 15
+var top = 20
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -14,18 +19,10 @@ func _ready():
 
 func start_roll():
 	get_node("/root/Node2D/Interface/Control/DicePool").queue_free()
-	var x = 10
-	var y = 20
-	var rolling_die_node = ResourceLoader.load("scenes/RollingDice.tscn")
+	x = left
+	y = top
 	for die in Globals.rolling_dice:
-		var rolling_die = rolling_die_node.instance()
-		rolling_die.position.x = x
-		rolling_die.position.y = y
-		x += rand_range(10,15)
-		if x> 60:
-			x = 10
-			y += rand_range(15,20)
-		add_child(rolling_die)
+		start_die(die)
 		
 	have_dice = true
 	
@@ -48,6 +45,32 @@ func sum_die():
 		sum += die[0]
 	return int(sum)
 
+func start_die(die):
+	var rolling_die_node = ResourceLoader.load("scenes/RollingDice.tscn")
+	var rolling_die = rolling_die_node.instance()
+	rolling_die.position.x = x
+	rolling_die.position.y = y + rand_range(-2,2)
+	x += rand_range(10,15)
+	if x> 44:
+		x = left
+		y += 9
+	add_child(rolling_die)
+	
+func stop_die(die, rolling_die):
+	die[1] = 0
+	rolling_die.rolling = false
+	rolling_die.set_number(die[0])
+	if die[0] == 6:
+		var new_die = Globals.add_rolling_die()
+		if new_die:
+			var effect = ResourceLoader.load("scenes/DieShimmer.tscn").instance()
+			effect.position = rolling_die.get_node("AnimatedSprite").position
+			rolling_die.add_child(effect)
+			start_die(new_die)
+		elif not alerted:
+			alerted = true
+			Globals.alert("Max dice reached")
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if Globals.rolling_dice and not have_dice:
@@ -56,14 +79,17 @@ func _process(delta):
 		return
 
 	var waiting = Globals.rolling_dice.size()
-	for i in Globals.rolling_dice.size():
+	var size = Globals.rolling_dice.size()
+	for i in size:
 		var rolling_die = get_child(i)
 		var die = Globals.rolling_dice[i]
-		die[1] = die[1] - delta
-		if die[1] < 0:
-			die[1] = 0
-			rolling_die.rolling = false
-			rolling_die.set_number(die[0])
-			waiting -= 1
+		if die[1] > 0:
+			die[1] = die[1] - delta
+		if die[1] <= 0:
+			if rolling_die.rolling:
+				stop_die(die, rolling_die)
+			else:
+				waiting -= 1
+			
 	if waiting <= 0 and not stopped:
 		stop_roll()

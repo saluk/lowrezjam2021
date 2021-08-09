@@ -1,11 +1,10 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://theme.tres" type="Theme" id=1]
+[ext_resource path="res://scenes/InfoBox.tscn" type="PackedScene" id=2]
 [ext_resource path="res://code/StatsMenu.gd" type="Script" id=3]
 [ext_resource path="res://art/exit_icon.png" type="Texture" id=4]
 [ext_resource path="res://scenes/ImageButton.tscn" type="PackedScene" id=5]
-[ext_resource path="res://art/black.png" type="Texture" id=6]
-[ext_resource path="res://code/InfoBox.gd" type="Script" id=7]
 [ext_resource path="res://scenes/HealthDisplay.tscn" type="PackedScene" id=8]
 
 [node name="Node2D" type="Node2D"]
@@ -50,27 +49,6 @@ __meta__ = {
 
 [node name="HealthDisplay" parent="Interface/Control" instance=ExtResource( 8 )]
 
-[node name="InfoBox" type="Node2D" parent="Interface/Control"]
-visible = false
-position = Vector2( 32, 32 )
-script = ExtResource( 7 )
-
-[node name="Info" type="Sprite" parent="Interface/Control/InfoBox"]
-position = Vector2( 0, -24 )
-scale = Vector2( 1, 0.244 )
-texture = ExtResource( 6 )
-
-[node name="Label" type="Label" parent="Interface/Control/InfoBox"]
-margin_left = -31.0
-margin_top = -33.0
-margin_right = 12.0
-margin_bottom = -18.0
-custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
-custom_constants/line_spacing = -1
-text = "how many km
-to walk"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="InfoBox" parent="Interface/Control" instance=ExtResource( 2 )]
 
 [editable path="Interface/Control/CloseButton"]

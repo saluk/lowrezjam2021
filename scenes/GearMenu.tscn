@@ -1,0 +1,45 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://theme.tres" type="Theme" id=1]
+[ext_resource path="res://scenes/InfoBox.tscn" type="PackedScene" id=2]
+[ext_resource path="res://code/GearMenu.gd" type="Script" id=3]
+[ext_resource path="res://scenes/ImageButton.tscn" type="PackedScene" id=4]
+[ext_resource path="res://art/exit_icon.png" type="Texture" id=5]
+
+[node name="GearMenu" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="Control" type="Control" parent="."]
+margin_right = 64.0
+margin_bottom = 64.0
+theme = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GearIcons" type="Node2D" parent="Control"]
+
+[node name="Label" type="Label" parent="Control"]
+margin_left = 22.0
+margin_top = 1.0
+margin_right = 42.0
+margin_bottom = 10.0
+text = "Gear"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ExitGearButton" parent="Control" instance=ExtResource( 4 )]
+position = Vector2( 5, 5 )
+button_action = "close"
+node_text_path = "/root/GearMenu/Control/InfoBox/Label"
+
+[node name="Foreground" parent="Control/ExitGearButton" index="1"]
+texture = ExtResource( 5 )
+
+[node name="InfoBox" parent="Control" groups=[
+"InfoBox",
+] instance=ExtResource( 2 )]
+
+[editable path="Control/ExitGearButton"]
+[editable path="Control/InfoBox"]
