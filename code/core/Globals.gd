@@ -69,7 +69,7 @@ func _input(ev):
 	#	return
 	if ev is InputEventMouseButton:
 		if ev.pressed:
-			if over_list and over_list[-1].has_method("_clicked"):
+			if over_list and over_list[-1] and over_list[-1].has_method("_clicked"):
 				over_list[-1]._clicked()
 
 func register_mouse_handler(ob, hit):
@@ -145,13 +145,16 @@ func card_result(result):
 		
 func action_draw_player_card(arguments):
 	var card_index = arguments[0]
-	equipment.append(card_templates[card_index])
+	current_card = card_templates[card_index]
+	action_equip()
+	#equipment.append(card_templates[card_index])
 
 func won_game():
 	if get_rune_count() >= config.get("rune_count"):
 		alert("You have collected all of the runes!")
 		alert("As you repeat them aloud, a portal appears.")
-		alert("Your adventures have come to an end - for now.")
+		alert("Your adventures have come to an end.")
+		alert("...\nfor now\n...")
 		events.append(["change_scene", ["scenes/intro.tscn"]])
 
 func get_rune_count():
@@ -231,8 +234,8 @@ func add_rolling_die():
 	if rolling_dice.size() >= 6:
 		return null
 	# value rolled, time to roll
-	#var die = [rng.randi_range(1,6), rng.randf_range(2.0,3.0)]
-	var die = [6, 1]
+	var die = [rng.randi_range(1,6), rng.randf_range(2.0,3.0)]
+	#var die = [6, 1]
 	rolling_dice.append(die)
 	play_sound("sounds/dice.wav", 3.0-die[1])
 	return die
@@ -374,7 +377,7 @@ var card_templates = [
 		{"name":"Avoid (SPD:3)", "action":[
 			"check", "speed", 3,
 			["You deftly sidestep it"],
-			["POISONED.", ["draw_player_card", 2]]
+			["POISONED.", ["draw_player_card", 6]]
 		]}
 	]}, # 4
 	{"name":"Rune Riga", "art":["rune"], "actions":[
@@ -383,7 +386,10 @@ var card_templates = [
 			["The rune is in your heart", ["draw_player_card", 5]],
 			["You forget the rune"]
 		]}		
-	]} # 5
+	]}, # 5
+	{"name":"Poisoned, -1 to SPD", "art":[], "actions":[
+		{"name":"OK", "action": ["equip"]},		
+	], "bonus":["speed",-1], "icon":"poison"}, # 6
 ]
 
 func shuffle_decks():
@@ -394,7 +400,7 @@ func shuffle_decks():
 func new_game():
 	current_point_location = "Green Coast"
 	cards = {
-		"Green Coast": [3],
+		"Green Coast": [4, 4, 4],
 		"Tree of Wealth": [1],
 		"Coal City": [0, 0, 0, 0],
 		"Deep Pit": [1, 1, 1, 0],
