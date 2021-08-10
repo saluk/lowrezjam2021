@@ -18,7 +18,7 @@ func _mouse_exit():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Globals.register_mouse_handler(self, self)
-	info_box = get_node("/root/Node2D/Interface/Control/InfoBox")
+	info_box = get_node("/root/SkillCheck/Interface/Control/InfoBox")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

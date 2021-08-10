@@ -64,7 +64,10 @@ position = Vector2( 13, 19 )
 
 [node name="Node2D" parent="." instance=ExtResource( 7 )]
 
+[editable path="ScrollMap/points/Green Coast"]
 [editable path="Interface"]
 [editable path="Interface/Control/WalkButton"]
 [editable path="Interface/Control/EnterButton"]
-[editable path="Interface/Control/Stats"]
+[editable path="Interface/Control/StatsButton"]
+[editable path="Interface/Control/GearButton"]
+[editable path="Node2D"]

@@ -71,7 +71,7 @@ __meta__ = {
 [node name="AddDiceButton" parent="Interface/Control" instance=ExtResource( 5 )]
 position = Vector2( 6, 25 )
 button_action = "add_dice"
-node_text_path = "/root/Node2D/Interface/Control/InfoBox/Label"
+node_text_path = "/root/SkillCheck/Interface/Control/InfoBox/Label"
 hover_description = "add dice to check"
 use_info_box = true
 
@@ -79,7 +79,7 @@ use_info_box = true
 material = SubResource( 1 )
 position = Vector2( 6, 34 )
 button_action = "remove_dice"
-node_text_path = "/root/Node2D/Interface/Control/InfoBox/Label"
+node_text_path = "/root/SkillCheck/Interface/Control/InfoBox/Label"
 hover_description = "remove dice from check"
 use_info_box = true
 
@@ -90,7 +90,7 @@ texture = ExtResource( 15 )
 material = SubResource( 2 )
 position = Vector2( 56, 32 )
 button_action = "roll_dice"
-node_text_path = "/root/Node2D/Interface/Control/InfoBox/Label"
+node_text_path = "/root/SkillCheck/Interface/Control/InfoBox/Label"
 hover_description = "Roll the dice!"
 use_info_box = true
 

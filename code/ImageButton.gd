@@ -41,13 +41,14 @@ func _mouse_exit():
 			get_tree().get_nodes_in_group("InfoBox")[0].show = false
 
 func _process(delta):
+	var last_visible = visible
 	Globals.safe_call(self, button_action+"_visible")
+	if not visible and last_visible and $Background.frame == 1:
+		_mouse_exit()
 	$Control.mouse_filter = {
 		true: $Control.MOUSE_FILTER_STOP,
 		false: $Control.MOUSE_FILTER_IGNORE
 	}[visible]
-	if not visible:
-		_mouse_exit()
 	Globals.safe_call(self, button_action+"_position")
 	Globals.safe_call(self, button_action+"_disabled")
 	if disabled:

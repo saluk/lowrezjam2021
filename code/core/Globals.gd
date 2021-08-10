@@ -92,8 +92,9 @@ func clear_mouse_over(over):
 	if over.has_method("_mouse_exit"):
 		over._mouse_exit()
 	over_list.erase(over)
-	if over_list and over_list[-1] != null:
-		get_node("/root/MouseCursor").set_cursor(over_list[-1].icon)
+	if over_list and is_instance_valid(over_list.back()):
+		print(over_list.back())
+		get_node("/root/MouseCursor").set_cursor(over_list.back().icon)
 	else:
 		get_node("/root/MouseCursor").set_cursor("normal")
 
@@ -111,13 +112,14 @@ func get_distance():
 	var pixels = (destination.position - current_point.position).length()
 	return int(pixels/distance_to_travel_per_speed)
 
+func get_max_distance():
+	return stats["speed"][1]
 # can we walk to the destination from our current point
 func can_walk():
-	var max_dist = stats["speed"][1]
 	var dist = get_distance()
 	if get_distance() < 0:
 		return false
-	if dist > max_dist:
+	if dist > get_max_distance():
 		return false
 	return true
 

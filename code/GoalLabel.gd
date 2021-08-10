@@ -18,6 +18,6 @@ func _mouse_exit():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	info_box = get_node("/root/Node2D/Interface/Control/InfoBox")
+	info_box = get_node("/root/SkillCheck/Interface/Control/InfoBox")
 	Globals.register_mouse_handler(self, self)
 	text = "Goal: " + str(Globals.target_number)

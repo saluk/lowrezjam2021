@@ -9,7 +9,7 @@ size = 4
 extra_spacing_space = -1
 font_data = ExtResource( 2 )
 
-[node name="Node2D" type="Node2D"]
+[node name="HPDisplay" type="Node2D"]
 
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2( 54, 1 )
