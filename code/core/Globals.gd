@@ -136,11 +136,14 @@ func play_sound(sound, seek_pos):
 	sounds.append(stream)
 	
 func card_result(result):
+	print(result)
 	var text = result[0]
 	var sub_actions = result.slice(1,result.size())
+	print(sub_actions)
 	for action in sub_actions:
 		var method = action[0]
-		var arguments = action.slice(1,result.size())
+		var arguments = action.slice(1,action.size())
+		print(arguments)
 		if arguments.size() > 0:
 			call("action_"+method, arguments)
 		else:
@@ -400,6 +403,22 @@ var card_templates = [
 	{"name":"Poisoned, -1 to SPD", "art":[], "actions":[
 		{"name":"OK", "action": ["equip"]},		
 	], "bonus":["speed",-1], "icon":"poison"}, # 6
+	{"name":"Bandit Hoard", "art":[], "actions":[
+		{"name":"Hide (GLE:5)", "action": [
+			"check", "guile", 5,
+			["They pass you by"],
+			["You are caught and must run!", [
+				"check", "speed", 7,
+				["You escape the horde"],
+				["You are beaten and looted", ["remove_player_card"], ["modify", "hp", -3]]
+			]]
+		]},
+		{"name":"Flee (SPD:5)", "action":[
+			"check", "speed", 5,
+			["Their trail finally grows cold"],
+			["You are caught and looted", ["remove_player_card"]]
+		]}
+	]}, #7
 ]
 
 func shuffle_decks():
@@ -410,7 +429,7 @@ func shuffle_decks():
 func new_game():
 	current_point_location = "Green Coast"
 	cards = {
-		"Green Coast": [4, 4, 4],
+		"Green Coast": [7, 7, 7, 7, 7],
 		"Tree of Wealth": [1],
 		"Coal City": [0, 0, 0, 0],
 		"Deep Pit": [1, 1, 1, 0],
