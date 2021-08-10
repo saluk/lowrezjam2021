@@ -19,7 +19,7 @@
 
 [sub_resource type="CanvasItemMaterial" id=2]
 
-[node name="Node2D" type="Node2D"]
+[node name="SkillCheck" type="Node2D"]
 pause_mode = 2
 
 [node name="Interface" type="Node2D" parent="."]

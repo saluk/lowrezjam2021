@@ -12,8 +12,7 @@ func load_settings():
 	if not file.file_exists(fn):
 		return false
 	file.open(fn, File.READ)
-	while file.get_position() < file.get_len():
-		settings = parse_json(file.get_line())
+	settings = parse_json(file.get_as_text())
 	return true
 
 func get(key):

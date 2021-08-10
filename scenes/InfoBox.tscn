@@ -5,6 +5,7 @@
 [ext_resource path="res://theme.tres" type="Theme" id=3]
 
 [node name="InfoBox" type="Node2D"]
+visible = false
 position = Vector2( 32, 32 )
 script = ExtResource( 1 )
 

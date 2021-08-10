@@ -44,6 +44,7 @@ var rolling_dice = []
 var target_number = 10
 var check_win = []
 var check_lose = []
+var check_result_successful = false
 
 var events = []
 var sounds = []
@@ -91,7 +92,7 @@ func clear_mouse_over(over):
 	if over.has_method("_mouse_exit"):
 		over._mouse_exit()
 	over_list.erase(over)
-	if over_list and over_list[-1]:
+	if over_list and over_list[-1] != null:
 		get_node("/root/MouseCursor").set_cursor(over_list[-1].icon)
 	else:
 		get_node("/root/MouseCursor").set_cursor("normal")
@@ -177,7 +178,9 @@ func action_stat_up(arguments):
 	var stat = arguments[0]
 	var amount = arguments[1]
 	stats[stat] = [stats[stat][0] + amount, stats[stat][1] + amount]
-	alert(stat+" up!")
+	alert(
+		"You level up! " + stat + " to "+str(stats[stat][0]) + "/" +str(stats[stat][1])
+	)
 			
 func _hp_below_zero():
 	events.append(["alert", ["Game Over!"]])
@@ -264,7 +267,12 @@ func action_close():
 func action_end_stat_check():
 	rolling_dice = []
 	dice_commited = 1
-	change_scene("scenes/Map.tscn")
+	get_node("/root/SkillCheck").queue_free()
+	if Globals.check_result_successful:
+		Globals.card_result(Globals.check_win)
+	else:
+		Globals.card_result(Globals.check_lose)
+	events.append(["change_scene",["scenes/Map.tscn"]])
 	
 func action_check(arguments):
 	rolling_dice = []

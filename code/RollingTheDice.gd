@@ -18,7 +18,7 @@ func _ready():
 	pass # Replace with function body.
 
 func start_roll():
-	get_node("/root/Node2D/Interface/Control/DicePool").queue_free()
+	get_node("/root/SkillCheck/Interface/Control/DicePool").queue_free()
 	x = left
 	y = top
 	for die in Globals.rolling_dice:
@@ -28,12 +28,13 @@ func start_roll():
 	
 func stop_roll():
 	stopped = true
-	var box = "/root/Node2D/Interface/Control/ResultBox"
+	var box = "/root/SkillCheck/Interface/Control/ResultBox"
 	var label = box + "/Label"
 	var sum = sum_die()
-	if sum >= Globals.target_number:
+	#TODO If you have a card that affects the outcome of a roll, it can be played here
+	Globals.check_result_successful = sum >= Globals.target_number
+	if Globals.check_result_successful:
 		get_node(label).text = str(sum_die()) + ". Pass! " + Globals.check_win[0]
-		Globals.card_result(Globals.check_win)
 	else:
 		get_node(label).text = str(sum_die()) + ". Fail! " + Globals.check_lose[0]
 		Globals.card_result(Globals.check_lose)
