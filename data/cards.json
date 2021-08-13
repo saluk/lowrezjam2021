@@ -1,0 +1,61 @@
+{
+    "card_templates": [
+        {"name":"Shop", "art":["bazaar"], "actions":[
+                {"name":"Haggle", "action":[]},
+                {"name":"Leave", "action":["close_card"]}
+        ]},
+        {"name":"Alley", "art":["alley"], "actions":[
+                {"name":"Search", "action":[]},
+                {"name":"Pass", "action":["close_card"]}
+        ]},
+        {"name":"Rune Found", "art":["alley"], "actions":[
+            {"name":"Start Over", "action":["new_game"]},
+            {"name":"Quit", "action":["quit_game"]}
+        ]},
+        {"name":"Boots (spd+1)", "art":[], "actions": [
+            {"name":"Equip", "action":["draw_player_card"]},
+            {"name":"Discard"} 
+        ], "bonus":["speed",1], "icon":"boots"},
+        {"name":"Snake", "art":["snake"], "actions":[
+            {"name":"Fight (POW:4)", "action":[
+                "check", "power", 4,
+                ["Snake guts are messy", ["stat_up", "speed", 1]],
+                ["Fangs hurt", ["modify", "hp", -2]]
+            ]},
+            {"name":"Avoid (SPD:3)", "action":[
+                "check", "speed", 3,
+                ["You deftly sidestep it"],
+                ["POISONED.", ["draw_player_card", 6]]
+            ]}
+        ]},
+        {"name":"Rune Riga", "art":["rune"], "actions":[
+            {"name":"memorize", "action": [
+                "check", "lore", 1,
+                ["The rune is in your heart", ["draw_player_card"]],
+                ["You forget the rune"]
+            ]}		
+        ]},
+        {"name":"Poisoned, -1 to SPD", "art":[], "actions":[
+            {"name":"OK", "action": ["equip"]},		
+        ], "bonus":["speed",-1], "icon":"poison"},
+        {"name":"Bandit Horde", "art":[], "actions":[
+            {"name":"Hide (GLE:5)", "action": [
+                "check", "guile", 5,
+                ["They pass you by"],
+                ["You are caught and must run!", ["add_event", "add_card_to_stack", [8]]]
+            ]},
+            {"name":"Flee (SPD:5)", "action":[
+                "check", "speed", 5,
+                ["Their trail finally grows cold"],
+                ["You are caught and looted", ["remove_player_card"]]
+            ]}
+        ]},
+        {"name":"Closer Bandit Horde", "art":[], "actions":[
+            {"name":"Flee", "action":[
+                "check", "speed", 7,
+                ["You escape the horde"],
+                ["You are beaten and looted", ["remove_player_card"], ["modify", "hp", -3]]
+            ]}
+        ]}
+    ]
+}

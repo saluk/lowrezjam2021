@@ -3,11 +3,11 @@ class_name Config
 
 var settings:Dictionary
 
-func _init():
-	load_settings()
+func _init(path):
+	load_settings(path)
 	
-func load_settings():
-	var fn = "res://data/world.json"
+func load_settings(path):
+	var fn = "res://"+path
 	var file = File.new()
 	if not file.file_exists(fn):
 		return false

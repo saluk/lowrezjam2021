@@ -8,11 +8,13 @@ var icon_count = 0
 var over_list = []
 
 var _alert = 0
+var _won = 0
 var rng
 
 var handlers = []
 
 var config:Config
+var card_templates:Array
 var save_keys = ["current_point_location", "cards", "stats", "gp", "hp"]
 
 var current_point_location = "Green Coast" # save
@@ -52,10 +54,20 @@ var events = []
 var sounds = []
 
 func _init():
-	config = Config.new()
+	config = Config.new("data/world.json")
+	card_templates = Config.new("data/cards.json").get("card_templates")
 	rng = RandomNumberGenerator.new()
 	rng.randomize()
 	new_game()
+	
+func get_card_template(index_or_name):
+	if typeof(index_or_name) == TYPE_INT:
+		return card_templates[index_or_name]
+	if typeof(index_or_name) == TYPE_REAL:
+		return card_templates[int(index_or_name)]
+	for card in card_templates:
+		if card["name"] == index_or_name:
+			return card
 
 func _ready():
 	pause_mode = Node.PAUSE_MODE_PROCESS
@@ -74,8 +86,6 @@ func proper_scene():
 		change_scene("scenes/DrawCards.tscn")
 
 func _input(ev):
-	#if wait_for_alert():
-	#	return
 	if ev is InputEventMouseButton:
 		if ev.pressed:
 			if over_list and over_list[-1] and over_list[-1].has_method("_clicked"):
@@ -135,6 +145,20 @@ func safe_call(object, method):
 	if object.has_method(method):
 		object.call(method)
 		
+func call_action(action):
+	print("Execute action:",action.method," in ",action.theme," with ",action.arguments)
+	var action_class = null
+	if action.theme == "card":
+		action_class = CardActions.new(action)
+	elif action.theme == "check":
+		action_class = CheckActions.new(action)
+	elif action.theme == "menu":
+		action_class = MainMenu.new(action)
+	if action_class and action_class.has_method("action_"+action.method):
+		action_class.call("action_"+action.method)
+	else:
+		call("action_"+action.method, action)
+		
 func add_event(name, arguments):
 	events.append([name, arguments])
 	print(events)
@@ -153,36 +177,32 @@ func card_result(result):
 	var sub_actions = result.slice(1,result.size())
 	print(sub_actions)
 	for action in sub_actions:
-		var method = action[0]
-		var arguments = action.slice(1,action.size())
-		print(arguments)
-		if arguments.size() > 0:
-			call("action_"+method, arguments)
-		else:
-			call("action_"+method)
+		call_action(Action.new(
+			action[0], 
+			action.slice(1, action.size()),
+			"card"
+		))
 			
 func action_add_event(arguments):
 	add_event(arguments[0], arguments.slice(1,arguments.size()))
-		
-func action_draw_player_card(arguments):
-	var card_index = arguments[0]
-	current_card = card_templates[card_index]
-	action_equip()
-	#equipment.append(card_templates[card_index])
 	
 func draw_card(arguments):
 	var card_index = arguments[0]
-	current_card = card_templates[card_index]
+	current_card = get_card_template(card_index)
 	print(current_card)
 	change_scene("res://scenes/Card.tscn")
 
 func won_game():
+	if _won:
+		return true
 	if get_rune_count() >= config.get("rune_count"):
 		alert("You have collected all of the runes!")
 		alert("As you repeat them aloud, a portal appears.")
 		alert("Your adventures have come to an end.")
 		alert("...\nfor now\n...")
 		add_event("change_scene", ["scenes/intro.tscn"])
+		_won += 1
+		return true
 
 func get_rune_count():
 	var total = 0
@@ -211,17 +231,6 @@ func action_stat_up(arguments):
 func _hp_below_zero():
 	add_event("alert", ["Game Over!"])
 	add_event("change_scene", ["res://scenes/intro.tscn"])
-
-func action_new_game():
-	new_game()
-	change_scene("res://scenes/Map.tscn")
-	
-func action_load_game():
-	load_game()
-	change_scene("res://scenes/Map.tscn")
-	
-func action_quit_game():
-	get_viewport().queue_free()
 	
 func action_walk():
 	walk_path = {
@@ -274,12 +283,12 @@ func action_close_alert():
 	
 func action_equip():
 	equipment.append(current_card)
-	var stat_key = current_card["bonus"][0]
-	var stat_amount = current_card["bonus"][1]
-	stats[stat_key][0] += stat_amount
-	stats[stat_key][1] += stat_amount
+	if "bonus" in current_card:
+		var stat_key = current_card["bonus"][0]
+		var stat_amount = current_card["bonus"][1]
+		stats[stat_key][0] += stat_amount
+		stats[stat_key][1] += stat_amount
 	add_event("alert", ["Equipped!"])
-	action_close_card()
 	
 func action_stats():
 	change_scene("scenes/StatsMenu.tscn")
@@ -299,15 +308,7 @@ func action_end_stat_check():
 	else:
 		Globals.card_result(Globals.check_lose)
 	add_event("change_scene",["scenes/Map.tscn"])
-	
-func action_check(arguments):
-	rolling_dice = []
-	dice_commited = 1
-	stat_checked = arguments[0]
-	target_number = arguments[1]
-	check_win = arguments[2]
-	check_lose = arguments[3]
-	change_scene("scenes/SkillCheck.tscn")
+
 
 func process_sounds():
 	var next_sounds = []
@@ -364,6 +365,9 @@ func wait_for_alert():
 		get_tree().paused = false
 		
 func change_scene(scene_path):
+	add_event("_change_scene", [scene_path])
+
+func _change_scene(scene_path):
 	over_list = []
 	handlers = []
 	current_point = null
@@ -376,66 +380,6 @@ func load_deck_at(point_name):
 	if not point_name in cards:
 		return
 	return cards[point_name]
-		
-var card_templates = [
-	{"name":"Shop", "art":["bazaar"], "actions":[
-			{"name":"Haggle", "action":[]},
-			{"name":"Leave", "action":["close_card"]}
-	]}, # 0
-	{"name":"Alley", "art":["alley"], "actions":[
-			{"name":"Search", "action":[]},
-			{"name":"Pass", "action":["close_card"]}
-	]}, # 1
-	{"name":"Rune Found", "art":["alley"], "actions":[
-		{"name":"Start Over", "action":["new_game"]},
-		{"name":"Quit", "action":["quit_game"]}
-	]}, # 2
-	{"name":"Boots (spd+1)", "art":[], "actions": [
-		{"name":"Equip", "action":["equip"]},
-		{"name":"Discard", "action":["close_card"]} 
-	], "bonus":["speed",1], "icon":"boots"}, # 3
-	{"name":"Snake", "art":["snake"], "actions":[
-		{"name":"Fight (POW:4)", "action":[
-			"check", "power", 4,
-			["Snake guts are messy", ["stat_up", "speed", 1]],
-			["Fangs hurt", ["modify", "hp", -2]]
-		]},
-		{"name":"Avoid (SPD:3)", "action":[
-			"check", "speed", 3,
-			["You deftly sidestep it"],
-			["POISONED.", ["draw_player_card", 6]]
-		]}
-	]}, # 4
-	{"name":"Rune Riga", "art":["rune"], "actions":[
-		{"name":"memorize", "action": [
-			"check", "lore", 1,
-			["The rune is in your heart", ["draw_player_card", 5]],
-			["You forget the rune"]
-		]}		
-	]}, # 5
-	{"name":"Poisoned, -1 to SPD", "art":[], "actions":[
-		{"name":"OK", "action": ["equip"]},		
-	], "bonus":["speed",-1], "icon":"poison"}, # 6
-	{"name":"Bandit Horde", "art":[], "actions":[
-		{"name":"Hide (GLE:5)", "action": [
-			"check", "guile", 5,
-			["They pass you by"],
-			["You are caught and must run!", ["add_event", "draw_card", [8]]]
-		]},
-		{"name":"Flee (SPD:5)", "action":[
-			"check", "speed", 5,
-			["Their trail finally grows cold"],
-			["You are caught and looted", ["remove_player_card"]]
-		]}
-	]}, #7
-	{"name":"Closer Bandit Horde", "art":[], "actions":[
-		{"name":"Flee", "action":[
-			"check", "speed", 7,
-			["You escape the horde"],
-			["You are beaten and looted", ["remove_player_card"], ["modify", "hp", -3]]
-		]}
-	]} #8
-]
 
 func shuffle_decks():
 	randomize()
@@ -443,14 +387,10 @@ func shuffle_decks():
 		cards[key].shuffle()
 		
 func new_game():
+	_won = 0
+	_alert = 0
 	current_point_location = "Green Coast"
-	cards = {
-		"Green Coast": [7, 7, 7, 7, 7],
-		"Tree of Wealth": [1],
-		"Coal City": [0, 0, 0, 0],
-		"Deep Pit": [1, 1, 1, 0],
-		"Fairway Inn": []
-	}
+	cards = config.get("cards").duplicate(true)
 	stats = {
 		"guile": [3, 3],
 		"power": [3, 3],
@@ -459,7 +399,7 @@ func new_game():
 	}
 	gp = 2
 	hp = 3
-	#equipment = []
+	equipment = []
 	shuffle_decks()
 
 func save_game():

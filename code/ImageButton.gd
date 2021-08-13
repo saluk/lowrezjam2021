@@ -103,4 +103,5 @@ func _clicked():
 	if disabled:
 		return
 	if Globals.has_method("action_" + button_action):
+		Globals.clear_mouse_over(self)
 		Globals.call("action_" + button_action)

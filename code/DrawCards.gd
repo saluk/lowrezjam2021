@@ -6,7 +6,7 @@ func _ready():
 		Globals.alert("No more cards to draw")
 	else:
 		var cardindex = Globals.current_deck.pop_front()
-		var card = Globals.card_templates[cardindex]
+		var card = Globals.get_card_template(cardindex)
 		Globals.current_card = card
 		Globals.change_scene("scenes/Card.tscn")
 

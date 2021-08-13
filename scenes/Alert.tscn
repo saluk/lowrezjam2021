@@ -55,9 +55,6 @@ hover_description = "close"
 [node name="Foreground" parent="Control/ImageButton" index="1"]
 texture = ExtResource( 3 )
 
-[node name="CollisionShape2D" parent="Control/ImageButton/Area2D" index="0"]
-scale = Vector2( 2, 2 )
-
 [node name="Label2" type="Label" parent="Control/ImageButton"]
 visible = false
 margin_left = -34.0

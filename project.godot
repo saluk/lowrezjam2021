@@ -10,9 +10,34 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Reference",
+"class": "Action",
+"language": "GDScript",
+"path": "res://code/actions/Action.gd"
+}, {
+"base": "Reference",
+"class": "ActionSet",
+"language": "GDScript",
+"path": "res://code/actions/ActionSet.gd"
+}, {
+"base": "ActionSet",
+"class": "CardActions",
+"language": "GDScript",
+"path": "res://code/actions/CardActions.gd"
+}, {
+"base": "ActionSet",
+"class": "CheckActions",
+"language": "GDScript",
+"path": "res://code/actions/CheckActions.gd"
+}, {
+"base": "Reference",
 "class": "Config",
 "language": "GDScript",
 "path": "res://code/core/Config.gd"
+}, {
+"base": "ActionSet",
+"class": "MainMenu",
+"language": "GDScript",
+"path": "res://code/actions/MainMenu.gd"
 }, {
 "base": "Reference",
 "class": "MouseHandler",
@@ -20,7 +45,12 @@ _global_script_classes=[ {
 "path": "res://code/core/mouse_handler.gd"
 } ]
 _global_script_class_icons={
+"Action": "",
+"ActionSet": "",
+"CardActions": "",
+"CheckActions": "",
 "Config": "",
+"MainMenu": "",
 "MouseHandler": ""
 }
 
