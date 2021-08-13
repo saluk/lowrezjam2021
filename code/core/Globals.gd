@@ -7,7 +7,8 @@ var mouse_over
 var icon_count = 0
 var over_list = []
 
-var alert = 0
+var _alert = 0
+var rng
 
 var handlers = []
 
@@ -36,6 +37,7 @@ var mouse_clicked = false
 var destination = null
 var walk_path = null
 var current_card = null
+var current_deck = null
 
 # stat check
 var dice_commited = 1
@@ -51,6 +53,8 @@ var sounds = []
 
 func _init():
 	config = Config.new()
+	rng = RandomNumberGenerator.new()
+	rng.randomize()
 	new_game()
 
 func _ready():
@@ -64,6 +68,10 @@ func get_player_pos():
 	var dir = walk_path["end"].position - walk_path["start"].position
 	var prog_vec = dir.normalized() * walk_path["progress"]
 	return walk_path["start"].position + prog_vec
+	
+func proper_scene():
+	if current_deck and current_deck.size() > 0:
+		change_scene("scenes/DrawCards.tscn")
 
 func _input(ev):
 	#if wait_for_alert():
@@ -127,6 +135,10 @@ func safe_call(object, method):
 	if object.has_method(method):
 		object.call(method)
 		
+func add_event(name, arguments):
+	events.append([name, arguments])
+	print(events)
+		
 func play_sound(sound, seek_pos):
 	var stream = AudioStreamPlayer.new()
 	stream.stream = ResourceLoader.load(sound)
@@ -148,12 +160,21 @@ func card_result(result):
 			call("action_"+method, arguments)
 		else:
 			call("action_"+method)
+			
+func action_add_event(arguments):
+	add_event(arguments[0], arguments.slice(1,arguments.size()))
 		
 func action_draw_player_card(arguments):
 	var card_index = arguments[0]
 	current_card = card_templates[card_index]
 	action_equip()
 	#equipment.append(card_templates[card_index])
+	
+func draw_card(arguments):
+	var card_index = arguments[0]
+	current_card = card_templates[card_index]
+	print(current_card)
+	change_scene("res://scenes/Card.tscn")
 
 func won_game():
 	if get_rune_count() >= config.get("rune_count"):
@@ -161,7 +182,7 @@ func won_game():
 		alert("As you repeat them aloud, a portal appears.")
 		alert("Your adventures have come to an end.")
 		alert("...\nfor now\n...")
-		events.append(["change_scene", ["scenes/intro.tscn"]])
+		add_event("change_scene", ["scenes/intro.tscn"])
 
 func get_rune_count():
 	var total = 0
@@ -188,8 +209,8 @@ func action_stat_up(arguments):
 	)
 			
 func _hp_below_zero():
-	events.append(["alert", ["Game Over!"]])
-	events.append(["change_scene", ["res://scenes/intro.tscn"]])
+	add_event("alert", ["Game Over!"])
+	add_event("change_scene", ["res://scenes/intro.tscn"])
 
 func action_new_game():
 	new_game()
@@ -211,7 +232,9 @@ func action_walk():
 	}
 	
 func action_enter():
-	load_card_at(current_point_location)
+	current_deck = load_deck_at(current_point_location)
+	print(self.current_deck)
+	change_scene("res://scenes/DrawCards.tscn")
 	
 func action_close_card():
 	change_scene("res://scenes/Map.tscn")
@@ -237,8 +260,6 @@ func action_roll_dice():
 	dice_commited = 0
 	
 func add_rolling_die():
-	var rng = RandomNumberGenerator.new()
-	rng.randomize()
 	if rolling_dice.size() >= 6:
 		return null
 	# value rolled, time to roll
@@ -257,7 +278,7 @@ func action_equip():
 	var stat_amount = current_card["bonus"][1]
 	stats[stat_key][0] += stat_amount
 	stats[stat_key][1] += stat_amount
-	events.append(["alert", ["Equipped!"]])
+	add_event("alert", ["Equipped!"])
 	action_close_card()
 	
 func action_stats():
@@ -277,7 +298,7 @@ func action_end_stat_check():
 		Globals.card_result(Globals.check_win)
 	else:
 		Globals.card_result(Globals.check_lose)
-	events.append(["change_scene",["scenes/Map.tscn"]])
+	add_event("change_scene",["scenes/Map.tscn"])
 	
 func action_check(arguments):
 	rolling_dice = []
@@ -311,31 +332,33 @@ func _process(delta):
 			current_point_location = current_point.location_name
 			walk_path = null
 			destination = null
-			#alert("Arrived")
-			events.append(["load_card_at", [current_point_location]])
 			
 func process_event():
 	if not events:
 		return
+	if has_node("/root/SkillCheck"):
+		return
 	var next_event = events.pop_front()
+	print("processing event:", next_event[0], " ", next_event[1])
 	callv(next_event[0], next_event[1])
 
 func alert(message):
-	if alert > 0:
+	print("Alert:", message)
+	if _alert > 0:
 		events.append(["alert", [message]])
 		return
-	alert = 1
+	_alert = 1
 	var alert_scene = ResourceLoader.load("scenes/Alert.tscn").instance()
 	alert_scene.get_node("Control/Label").text = message
 	get_viewport().add_child(alert_scene)
 	
 func wait_for_alert():
-	if alert > 0:
+	if _alert > 0:
 		if get_node_or_null("/root/Alert"):
-			alert += 1
+			_alert += 1
 		else:
-			if alert > 1:
-				alert = 0
+			if _alert > 1:
+				_alert = 0
 		return true
 	else:
 		get_tree().paused = false
@@ -345,24 +368,14 @@ func change_scene(scene_path):
 	handlers = []
 	current_point = null
 	destination = null
+	print(current_deck)
+	print("change scene to", scene_path)
 	get_tree().change_scene(scene_path)
 	
-func load_card_at(point_name):
+func load_deck_at(point_name):
 	if not point_name in cards:
 		return
-	var card_stack = cards[point_name]
-	if card_stack:
-		var current_card_index = card_stack.pop_front()
-		current_card = card_templates[current_card_index]
-	else:
-		current_card = {
-			"name":"Nothing Here",
-			"art":[], 
-			"actions":[
-				{"name":"Ok","action":["close_card"]}
-			]
-		}
-	change_scene("res://scenes/Card.tscn")
+	return cards[point_name]
 		
 var card_templates = [
 	{"name":"Shop", "art":["bazaar"], "actions":[
@@ -403,15 +416,11 @@ var card_templates = [
 	{"name":"Poisoned, -1 to SPD", "art":[], "actions":[
 		{"name":"OK", "action": ["equip"]},		
 	], "bonus":["speed",-1], "icon":"poison"}, # 6
-	{"name":"Bandit Hoard", "art":[], "actions":[
+	{"name":"Bandit Horde", "art":[], "actions":[
 		{"name":"Hide (GLE:5)", "action": [
 			"check", "guile", 5,
 			["They pass you by"],
-			["You are caught and must run!", [
-				"check", "speed", 7,
-				["You escape the horde"],
-				["You are beaten and looted", ["remove_player_card"], ["modify", "hp", -3]]
-			]]
+			["You are caught and must run!", ["add_event", "draw_card", [8]]]
 		]},
 		{"name":"Flee (SPD:5)", "action":[
 			"check", "speed", 5,
@@ -419,6 +428,13 @@ var card_templates = [
 			["You are caught and looted", ["remove_player_card"]]
 		]}
 	]}, #7
+	{"name":"Closer Bandit Horde", "art":[], "actions":[
+		{"name":"Flee", "action":[
+			"check", "speed", 7,
+			["You escape the horde"],
+			["You are beaten and looted", ["remove_player_card"], ["modify", "hp", -3]]
+		]}
+	]} #8
 ]
 
 func shuffle_decks():

@@ -15,6 +15,7 @@ func drag_end():
 
 func _ready():
 	Globals.won_game()
+	Globals.proper_scene()
 	Globals.register_mouse_handler(self, get_node("/root/Node2D/Control"))
 	get_node("/root/MouseCursor").connect(
 		"mouse_cursor_moved",
