@@ -12,7 +12,9 @@ width = 64
 height = 64
 noise = SubResource( 1 )
 
-[node name="Alert" type="Node2D"]
+[node name="Alert" type="Node2D" groups=[
+"alert",
+]]
 pause_mode = 2
 script = ExtResource( 2 )
 

@@ -21,7 +21,7 @@
             {"name":"Avoid (SPD:3)", "action":[
                 "check", "speed", 3,
                 ["You deftly sidestep it"],
-                ["POISONED.", ["draw_player_card", 6]]
+                ["POISONED.", ["draw_player_card", "Poisoned, -1 to SPD"]]
             ]}
         ]},
         {"name":"Rune Riga", "art":["rune"], "actions":[
@@ -32,7 +32,7 @@
             ]}		
         ]},
         {"name":"Poisoned, -1 to SPD", "art":[], "actions":[
-            {"name":"OK", "action": ["equip"]},		
+            {"name":"OK", "action": ["equip"]}		
         ], "bonus":["speed",-1], "icon":"poison", "removable":false},
         {"name":"Bandit Horde", "art":[], "actions":[
             {"name":"Hide (GLE:5)", "action": [
@@ -52,6 +52,10 @@
                 ["You escape the horde"],
                 ["You are beaten and looted", ["remove_player_card"], ["modify", "hp", -3]]
             ]}
-        ]}
+        ]},
+        {"name":"Quickfoot", "art":[], "actions": [
+            {"name":"Equip", "action":["draw_player_card"]},
+            {"name":"Discard"} 
+        ], "recover":["speed",1], "icon":"boots"}
     ]
 }

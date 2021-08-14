@@ -15,7 +15,7 @@ var handlers = []
 
 var config:Config
 var card_templates:Array
-var save_keys = ["current_point_location", "cards", "stats", "gp", "hp"]
+var save_keys = ["current_point_location", "cards", "stats", "gp", "hp", "maxhp"]
 
 var current_point_location = "Green Coast" # save
 var cards = {} # save
@@ -25,11 +25,12 @@ var equipment:Array = [{"name":"Boots (spd+1)", "art":[], "actions": [
 		{"name":"Discard", "action":["close_card"]} 
 	], "bonus":["speed",1], "icon":"boots"}] # save
 var hp = 3 # save
+var maxhp = 3 # save
 var gp = 2 # save
 var stat_descriptions = {
 	"guile":"outsmart\npeople",
-	"power":"win battles",
-	"speed":"km to walk\nbefore rest",
+	"power":"rest:hp+this\nwin fights",
+	"speed":"distance-km you can walk",
 	"lore":"solve puzzles"
 }
 
@@ -69,6 +70,8 @@ func get_card_template(index_or_name):
 	for card in card_templates:
 		if card["name"] == index_or_name:
 			return card
+	print("couldn't find card for "+index_or_name)
+	assert(false)
 
 func _ready():
 	pause_mode = Node.PAUSE_MODE_PROCESS
@@ -308,12 +311,33 @@ func add_rolling_die():
 	var dice_time = rng.randf_range(2.0,3.0) / config.get("dice_speed")
 	var die = [rng.randi_range(1,6), dice_time]
 	#var die = [6, 1]
+	if config.get("fixdice"):
+		die[0] = config.get("fixdice")
 	rolling_dice.append(die)
 	play_sound("sounds/dice.wav", 3.0-die[1])
 	return die
 	
+func get_alert():
+	var nodes = get_tree().get_nodes_in_group("alert")
+	if nodes:
+		return nodes[0]
+	return null
+	
 func action_close_alert():
-	get_node("/root/Alert").fade_dir = -1
+	if get_alert():
+		get_alert().fade_dir = -1
+		
+func get_equip_recover(stat):
+	var sum = 0
+	for equip in equipment:
+		if "recover" in equip and equip["recover"][0] == stat:
+			sum += equip["recover"][1]
+	return sum
+	
+func recover_stat(stat):
+	if stats[stat][0] < stats[stat][1]:
+		stats[stat][0] += 1
+		alert("recovered 1 "+stat)
 	
 func action_equip():
 	equipment.append(current_card)
@@ -322,7 +346,6 @@ func action_equip():
 		var stat_amount = current_card["bonus"][1]
 		stats[stat_key][0] += stat_amount
 		stats[stat_key][1] += stat_amount
-	add_event("alert", ["Equipped!"])
 	
 func action_stats():
 	change_scene("scenes/StatsMenu.tscn")
@@ -355,18 +378,24 @@ func _process(delta):
 	print(get_scene()," ",map_mode," ",current_card)
 	process_sounds()
 	if wait_for_alert():
+		print("alert")
 		return
 	if process_event():
+		print("event")
 		return
 	if process_check():
+		print("check")
 		return
 	if process_card():
+		print("card")
 		return
 	if get_scene() in ["card", "check"]:
 		change_scene("scenes/Map.tscn", true)
 	if process_walking(delta):
+		print("walking")
 		return
 	if process_deck():
+		print("deck")
 		return
 		
 func process_menus():
@@ -379,6 +408,7 @@ func process_check():
 
 func process_card():
 	if get_scene() == "card":
+		print(current_card)
 		if current_card:
 			return true
 		
@@ -400,6 +430,7 @@ func process_deck():
 			if not current_card:
 				var cardindex = current_deck.pop_front()
 				var card = get_card_template(cardindex)
+				assert(card)
 				current_card = card
 				change_scene("scenes/Card.tscn", true)
 		return true
@@ -445,7 +476,10 @@ func alert(message):
 	_alert = 1
 	var alert_scene = ResourceLoader.load("scenes/Alert.tscn").instance()
 	alert_scene.get_node("Control/Label").text = message
-	get_viewport().add_child(alert_scene)
+	if get_tree().get_nodes_in_group("alertanchor"):
+		get_tree().get_nodes_in_group("alertanchor")[0].add_child(alert_scene)
+	else:
+		get_viewport().add_child(alert_scene)
 	
 func wait_for_alert():
 	if _alert > 0:
@@ -455,8 +489,6 @@ func wait_for_alert():
 			if _alert > 1:
 				_alert = 0
 		return true
-	else:
-		get_tree().paused = false
 		
 func change_scene(scene_path, force=false):
 	if force:
@@ -492,8 +524,9 @@ func new_game():
 	stats = {}
 	for stat in config.get("stats"):
 		stats[stat] = [config.get("stats")[stat], config.get("stats")[stat]]
-	gp = 2
-	hp = 3
+	gp = config.get("gp")
+	hp = config.get("maxhp")
+	maxhp = config.get("maxhp")
 	equipment = []
 	shuffle_decks()
 

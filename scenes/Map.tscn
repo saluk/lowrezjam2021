@@ -94,6 +94,10 @@ rotation = 3.14159
 
 [node name="Node2D" parent="." instance=ExtResource( 7 )]
 
+[node name="alertanchor" type="Node2D" parent="." groups=[
+"alertanchor",
+]]
+
 [editable path="ScrollMap/points/Green Coast"]
 [editable path="Interface"]
 [editable path="Interface/Control/WalkButton"]

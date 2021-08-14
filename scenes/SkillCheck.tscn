@@ -45,10 +45,9 @@ __meta__ = {
 }
 
 [node name="GoalLabel" type="Label" parent="Interface/Control"]
-margin_left = 1.0
-margin_top = 10.0
-margin_right = 41.0
-margin_bottom = 19.0
+margin_top = 7.0
+margin_right = 40.0
+margin_bottom = 16.0
 mouse_filter = 0
 text = "Goal: 12"
 script = ExtResource( 3 )
@@ -58,9 +57,9 @@ __meta__ = {
 
 [node name="DicePool" type="Label" parent="Interface/Control"]
 margin_left = 48.0
-margin_top = 10.0
+margin_top = 7.0
 margin_right = 88.0
-margin_bottom = 19.0
+margin_bottom = 16.0
 mouse_filter = 0
 text = "6/8"
 script = ExtResource( 12 )
@@ -68,8 +67,33 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="GearEffects" type="Node2D" parent="Interface/Control"]
+position = Vector2( 4, 20 )
+
+[node name="DiceTokens" type="Node2D" parent="Interface/Control"]
+position = Vector2( 7, 9 )
+script = ExtResource( 10 )
+
+[node name="DiceToken1" parent="Interface/Control/DiceTokens" instance=ExtResource( 9 )]
+position = Vector2( 27, 15 )
+
+[node name="DiceToken2" parent="Interface/Control/DiceTokens" instance=ExtResource( 9 )]
+position = Vector2( 23, 19 )
+
+[node name="DiceToken3" parent="Interface/Control/DiceTokens" instance=ExtResource( 9 )]
+position = Vector2( 31, 18 )
+
+[node name="DiceToken4" parent="Interface/Control/DiceTokens" instance=ExtResource( 9 )]
+position = Vector2( 36, 21 )
+
+[node name="DiceToken5" parent="Interface/Control/DiceTokens" instance=ExtResource( 9 )]
+position = Vector2( 19, 23 )
+
+[node name="DiceToken6" parent="Interface/Control/DiceTokens" instance=ExtResource( 9 )]
+position = Vector2( 41, 24 )
+
 [node name="AddDiceButton" parent="Interface/Control" instance=ExtResource( 5 )]
-position = Vector2( 6, 25 )
+position = Vector2( 51, 25 )
 button_action = "add_dice"
 node_text_path = "/root/SkillCheck/Interface/Control/InfoBox/Label"
 hover_description = "add dice to check"
@@ -77,7 +101,7 @@ use_info_box = true
 
 [node name="RemoveDiceButton" parent="Interface/Control" instance=ExtResource( 5 )]
 material = SubResource( 1 )
-position = Vector2( 6, 34 )
+position = Vector2( 60, 25 )
 button_action = "remove_dice"
 node_text_path = "/root/SkillCheck/Interface/Control/InfoBox/Label"
 hover_description = "remove dice from check"
@@ -88,7 +112,7 @@ texture = ExtResource( 15 )
 
 [node name="RollButton" parent="Interface/Control" instance=ExtResource( 5 )]
 material = SubResource( 2 )
-position = Vector2( 56, 32 )
+position = Vector2( 60, 36 )
 button_action = "roll_dice"
 node_text_path = "/root/SkillCheck/Interface/Control/InfoBox/Label"
 hover_description = "Roll the dice!"
@@ -96,27 +120,6 @@ use_info_box = true
 
 [node name="Foreground" parent="Interface/Control/RollButton" index="1"]
 texture = ExtResource( 13 )
-
-[node name="DiceTokens" type="Node2D" parent="Interface/Control"]
-script = ExtResource( 10 )
-
-[node name="DiceToken1" parent="Interface/Control/DiceTokens" instance=ExtResource( 9 )]
-position = Vector2( 13, 22 )
-
-[node name="DiceToken2" parent="Interface/Control/DiceTokens" instance=ExtResource( 9 )]
-position = Vector2( 23, 20 )
-
-[node name="DiceToken3" parent="Interface/Control/DiceTokens" instance=ExtResource( 9 )]
-position = Vector2( 33, 22 )
-
-[node name="DiceToken4" parent="Interface/Control/DiceTokens" instance=ExtResource( 9 )]
-position = Vector2( 33, 35 )
-
-[node name="DiceToken5" parent="Interface/Control/DiceTokens" instance=ExtResource( 9 )]
-position = Vector2( 21, 33 )
-
-[node name="DiceToken6" parent="Interface/Control/DiceTokens" instance=ExtResource( 9 )]
-position = Vector2( 11, 35 )
 
 [node name="RollingTheDice" type="Node2D" parent="Interface/Control"]
 script = ExtResource( 14 )
@@ -182,7 +185,7 @@ __meta__ = {
 }
 
 [node name="Node2D" parent="." instance=ExtResource( 16 )]
-position = Vector2( 0, 20 )
+position = Vector2( 0, 15 )
 
 [editable path="Interface/Control/AddDiceButton"]
 [editable path="Interface/Control/RemoveDiceButton"]

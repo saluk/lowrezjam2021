@@ -1,6 +1,8 @@
 {
     "rune_count": 2,
     "dice_speed": 10.0,
+    "maxhp": 3,
+    "gp": 0,
     "points": {
 		"Green Coast": {"level":1, "type":"city"},
 		"Tree of Wealth": {"level":2, "type":"city"},
@@ -22,12 +24,13 @@
         "5": []
     },
     "cards": {
-        "Green Coast": [1, 1]
+        "Green Coast": ["Quickfoot"]
     },
     "stats": {
         "guile": 3,
-        "speed": 20,
+        "speed": 3,
         "power": 3,
         "lore": 3
-    }
+    },
+    "fixdice": 1
 }

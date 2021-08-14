@@ -27,4 +27,4 @@ func _process(delta):
 		rect_position = Vector2(0,0)
 		
 	last_hp = Globals.hp
-	text = "H:"+str(last_hp)
+	text = "H:"+str(last_hp)+"/"+str(Globals.maxhp)

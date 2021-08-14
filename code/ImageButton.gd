@@ -60,7 +60,7 @@ func _process(delta):
 		$DisabledOverlay.visible = false
 	
 func walk_visible():
-	if Globals.destination and not Globals.walk_path:
+	if Globals.destination and not Globals.walk_path and travel_method() == "walk":
 		visible = true
 	else:
 		visible = false
@@ -81,9 +81,11 @@ func roll_dice_visible():
 	visible = Globals.rolling_dice.size() == 0
 		
 func travel_method():
-	if Globals.destination and Globals.destination == Globals.current_point:
-		return "enter"
-	return "walk"
+	if Globals.destination:
+		if Globals.destination == Globals.current_point:
+			return "enter"
+		return "walk"
+	return ""
 
 func enter_visible():
 	if travel_method() == "enter":
@@ -110,5 +112,5 @@ func _clicked():
 	if disabled:
 		return
 	if Globals.has_method("action_" + button_action):
-		Globals.clear_mouse_over(self)
+		#Globals.clear_mouse_over(self)
 		Globals.call("action_" + button_action)

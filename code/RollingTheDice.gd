@@ -7,6 +7,7 @@ var y
 var alerted = false
 var left = 15
 var top = 20
+var ones_proced = 0
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -71,6 +72,11 @@ func stop_die(die, rolling_die):
 		elif not alerted:
 			alerted = true
 			Globals.alert("Max dice reached")
+	if die[0] == 1:
+		var can_proc_ones = Globals.get_equip_recover(Globals.stat_checked)
+		if ones_proced < can_proc_ones:
+			ones_proced += 1
+			Globals.recover_stat(Globals.stat_checked)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
