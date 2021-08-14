@@ -45,6 +45,9 @@ func sum_die():
 	var sum = 0
 	for die in Globals.rolling_dice:
 		sum += die[0]
+	sum += Globals.get_equip_roll_bonus(Globals.stat_checked)
+	if sum <= 0:
+		sum = 0
 	return int(sum)
 
 func start_die(die):

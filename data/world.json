@@ -1,7 +1,7 @@
 {
     "rune_count": 2,
     "dice_speed": 10.0,
-    "maxhp": 3,
+    "maxhp": 7,
     "gp": 0,
     "points": {
 		"Green Coast": {"level":1, "type":"city"},
@@ -24,7 +24,8 @@
         "5": []
     },
     "cards": {
-        "Green Coast": ["Quickfoot"]
+        "Green Coast": ["Shield", "Whip", "Healthy Aura", "Boots", "Quickfoot"],
+        "Deep Pit": ["Health Potion"]
     },
     "stats": {
         "guile": 3,

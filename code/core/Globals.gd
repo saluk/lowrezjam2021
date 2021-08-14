@@ -218,7 +218,10 @@ func get_rune_count():
 	return total
 	
 func modify(field, amount):
-	print("modifying ",field," by ",amount)
+	if field == "hp" and amount < 0:
+		amount += get_equip_shield()
+		if amount >= 0:
+			return
 	set(field, get(field) + amount)
 	if get(field) <= 0:
 		set(field, 0)
@@ -241,9 +244,9 @@ func rest():
 	alert("resting")
 	for stat in stats:
 		stats[stat][0] = stats[stat][1]
-	hp += 2
-	if hp >= stats["power"][1]:
-		hp = stats["power"][1]
+	hp += stats["power"][1]
+	if hp >= maxhp:
+		hp = maxhp
 	
 func action_walk():
 	walk_path = {
@@ -327,12 +330,44 @@ func action_close_alert():
 	if get_alert():
 		get_alert().fade_dir = -1
 		
+func gear_description(gear):
+	var s = gear["name"]+". "
+	if "rollmod" in gear:
+		if gear["rollmod"][1]>0:
+			s += "+"
+		s+=str(gear["rollmod"][1])+" on "+gear["rollmod"][0]+" rolls"
+	if "bonus" in gear:
+		if gear["bonus"][1]>0:
+			s += "+"
+		s+=str(gear["bonus"][1])+" to "+gear["bonus"][0]
+	if "recover" in gear:
+		var r = str(gear["recover"][1])
+		var t = gear["recover"][0]
+		s+="1 = +"+t+" (x"+r+")"
+	if "shield" in gear:
+		s+="prevent "+str(gear["shield"])+" dmg"
+	return s
+		
 func get_equip_recover(stat):
 	var sum = 0
 	for equip in equipment:
 		if "recover" in equip and equip["recover"][0] == stat:
 			sum += equip["recover"][1]
 	return sum
+	
+func get_equip_roll_bonus(stat):
+	var modifier = 0
+	for equip in equipment:
+		if "rollmod" in equip and equip["rollmod"][0] == stat:
+			modifier += equip["rollmod"][1]
+	return modifier
+	
+func get_equip_shield():
+	var modifier = 0
+	for equip in equipment:
+		if "shield" in equip:
+			modifier += equip["shield"]
+	return modifier
 	
 func recover_stat(stat):
 	if stats[stat][0] < stats[stat][1]:
@@ -344,8 +379,26 @@ func action_equip():
 	if "bonus" in current_card:
 		var stat_key = current_card["bonus"][0]
 		var stat_amount = current_card["bonus"][1]
-		stats[stat_key][0] += stat_amount
-		stats[stat_key][1] += stat_amount
+		if stat_key == "maxhp":
+			maxhp += stat_amount
+			hp += stat_amount
+		else:
+			stats[stat_key][0] += stat_amount
+			stats[stat_key][1] += stat_amount
+
+func equip_remove(card):
+	if "bonus" in card:
+		var stat_key = card["bonus"][0]
+		var stat_amount = -card["bonus"][1]
+		if stat_key == "maxhp":
+			maxhp += stat_amount
+			if hp > maxhp:
+				hp = maxhp
+		else:
+			stats[stat_key][0] += stat_amount
+			stats[stat_key][1] += stat_amount
+			if stats[stat_key][0] > stats[stat_key][1]:
+				stats[stat_key][0] = stats[stat_key][1]
 	
 func action_stats():
 	change_scene("scenes/StatsMenu.tscn")

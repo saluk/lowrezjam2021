@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://art/exit_icon.png" type="Texture" id=1]
 [ext_resource path="res://art/black.png" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://theme.tres" type="Theme" id=4]
 [ext_resource path="res://scenes/ImageButton.tscn" type="PackedScene" id=5]
 [ext_resource path="res://code/InfoBox.gd" type="Script" id=6]
+[ext_resource path="res://code/GearEffects.gd" type="Script" id=7]
 [ext_resource path="res://scenes/DiceToken.tscn" type="PackedScene" id=9]
 [ext_resource path="res://code/DiceTokens.gd" type="Script" id=10]
 [ext_resource path="res://code/StatCheckLabel.gd" type="Script" id=11]
@@ -69,6 +70,7 @@ __meta__ = {
 
 [node name="GearEffects" type="Node2D" parent="Interface/Control"]
 position = Vector2( 4, 20 )
+script = ExtResource( 7 )
 
 [node name="DiceTokens" type="Node2D" parent="Interface/Control"]
 position = Vector2( 7, 9 )

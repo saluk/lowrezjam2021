@@ -8,20 +8,16 @@
                 {"name":"Search", "action":[]},
                 {"name":"Pass", "action":[]}
         ]},
-        {"name":"Boots (spd+1)", "art":[], "actions": [
-            {"name":"Equip", "action":["draw_player_card"]},
-            {"name":"Discard"} 
-        ], "bonus":["speed",1], "icon":"boots"},
         {"name":"Snake", "art":["snake"], "actions":[
             {"name":"Fight (POW:4)", "action":[
-                "check", "power", 1,
+                "check", "power", 12,
                 ["Snake guts are messy", ["stat_up", "speed", 1]],
-                ["Fangs hurt", ["modify", "hp", -2], ["remove_player_card"]]
+                ["Fangs hurt", ["modify", "hp", -2]]
             ]},
             {"name":"Avoid (SPD:3)", "action":[
                 "check", "speed", 3,
                 ["You deftly sidestep it"],
-                ["POISONED.", ["draw_player_card", "Poisoned, -1 to SPD"]]
+                ["POISONED.", ["draw_player_card", "Poison"]]
             ]}
         ]},
         {"name":"Rune Riga", "art":["rune"], "actions":[
@@ -31,7 +27,7 @@
                 ["You forget the rune"]
             ]}		
         ]},
-        {"name":"Poisoned, -1 to SPD", "art":[], "actions":[
+        {"name":"Poison", "art":[], "actions":[
             {"name":"OK", "action": ["equip"]}		
         ], "bonus":["speed",-1], "icon":"poison", "removable":false},
         {"name":"Bandit Horde", "art":[], "actions":[
@@ -53,9 +49,36 @@
                 ["You are beaten and looted", ["remove_player_card"], ["modify", "hp", -3]]
             ]}
         ]},
+
+        {"name":"Health Potion", "art":[], "actions": [
+            {"name":"Drink", "action":["modify", "hp", 10]},
+            {"name":"Discard"} 
+        ]
+        },
+
         {"name":"Quickfoot", "art":[], "actions": [
             {"name":"Equip", "action":["draw_player_card"]},
             {"name":"Discard"} 
-        ], "recover":["speed",1], "icon":"boots"}
+        ], "recover":["speed",1], "icon":"boots"
+        },
+        {"name":"Whip", "art":[], "actions": [
+            {"name":"Equip", "action":["draw_player_card"]},
+            {"name":"Discard"} 
+        ], "rollmod":["speed",-1], "icon":"boots"
+        },
+        {"name":"Healthy Aura", "art":[], "actions": [
+            {"name":"Equip", "action":["draw_player_card"]},
+            {"name":"Discard"} 
+        ], "bonus":["maxhp",1], "icon":"boots"
+        },
+        {"name":"Shield", "art":[], "actions": [
+            {"name":"Equip", "action":["draw_player_card"]},
+            {"name":"Discard"} 
+        ], "shield":1, "icon":"boots"
+        },
+        {"name":"Boots", "art":[], "actions": [
+            {"name":"Equip", "action":["draw_player_card"]},
+            {"name":"Discard"} 
+        ], "bonus":["speed",1], "icon":"boots"}
     ]
 }

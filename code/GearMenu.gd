@@ -16,7 +16,7 @@ func _ready():
 			x = 6
 			y += 10
 		button.button_action = ""
-		button.hover_description = gear["name"]
+		button.hover_description = Globals.gear_description(gear)
 		button.set_icon(gear["icon"])
 		button.node_text_path = "/root/GearMenu/Control/InfoBox/Label"
 		button.use_info_box = true
