@@ -1,5 +1,6 @@
 {
     "rune_count": 2,
+    "dice_speed": 10.0,
     "points": {
 		"Green Coast": {"level":1, "type":"city"},
 		"Tree of Wealth": {"level":1, "type":"city"},
@@ -14,6 +15,6 @@
         "4": []
     },
     "cards": {
-        "Green Coast": [1]
+        "Green Coast": [1, 1]
     }
 }

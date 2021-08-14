@@ -15,7 +15,7 @@ func action_check():
 	Globals.target_number = self.action.arguments[1]
 	Globals.check_win = self.action.arguments[2]
 	Globals.check_lose = self.action.arguments[3]
-	Globals.change_scene("scenes/SkillCheck.tscn")
+	Globals.change_scene("scenes/SkillCheck.tscn", true)
 
 func action_draw_player_card():
 	if self.action.arguments.size() > 0:

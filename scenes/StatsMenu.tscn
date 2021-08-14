@@ -7,7 +7,7 @@
 [ext_resource path="res://scenes/ImageButton.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/HealthDisplay.tscn" type="PackedScene" id=8]
 
-[node name="Node2D" type="Node2D"]
+[node name="StatsMenu" type="Node2D"]
 pause_mode = 2
 script = ExtResource( 3 )
 

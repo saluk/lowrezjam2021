@@ -40,3 +40,4 @@ func perform_card_action():
 
 func _clicked():
 	perform_card_action()
+	Globals.current_card = null

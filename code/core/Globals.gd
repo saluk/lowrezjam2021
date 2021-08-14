@@ -235,6 +235,7 @@ func _hp_below_zero():
 		return true
 		
 func rest():
+	alert("resting")
 	for stat in stats:
 		stats[stat][0] = stats[stat][1]
 	hp += 2
@@ -299,7 +300,8 @@ func add_rolling_die():
 	if rolling_dice.size() >= 6:
 		return null
 	# value rolled, time to roll
-	var die = [rng.randi_range(1,6), rng.randf_range(2.0,3.0)]
+	var dice_time = rng.randf_range(2.0,3.0) / config.get("dice_speed")
+	var die = [rng.randi_range(1,6), dice_time]
 	#var die = [6, 1]
 	rolling_dice.append(die)
 	play_sound("sounds/dice.wav", 3.0-die[1])
@@ -345,7 +347,7 @@ func process_sounds():
 			
 
 func _process(delta):
-	#print(get_scene())
+	print(get_scene()," ",map_mode," ",current_card)
 	process_sounds()
 	if wait_for_alert():
 		return
@@ -355,10 +357,16 @@ func _process(delta):
 		return
 	if process_card():
 		return
+	if get_scene() in ["card", "check"]:
+		change_scene("scenes/Map.tscn", true)
 	if process_walking(delta):
 		return
 	if process_deck():
 		return
+		
+func process_menus():
+	if get_scene() in ["stats","gear"]:
+		return true
 
 func process_check():
 	if get_scene() == "check":
@@ -366,7 +374,8 @@ func process_check():
 
 func process_card():
 	if get_scene() == "card":
-		return true
+		if current_card:
+			return true
 		
 func get_scene():
 	if has_node("/root/Node2D/ScrollMap"):
@@ -375,15 +384,21 @@ func get_scene():
 		return "card"
 	if has_node("/root/SkillCheck"):
 		return "check"
+	if has_node("/root/StatsMenu"):
+		return "stats"
+	if has_node("/root/GearMenu"):
+		return "gear"
 		
 func process_deck():
-	if current_deck and get_scene() == "map":
-		if not current_card:
-			var cardindex = current_deck.pop_front()
-			var card = get_card_template(cardindex)
-			current_card = card
-			change_scene("scenes/Card.tscn")
-	else:
+	if current_deck:
+		if get_scene() == "map":
+			if not current_card:
+				var cardindex = current_deck.pop_front()
+				var card = get_card_template(cardindex)
+				current_card = card
+				change_scene("scenes/Card.tscn", true)
+		return true
+	elif get_scene() == "map":
 		if map_mode == "draw":
 			rest()
 			change_mode("explore")
@@ -454,7 +469,7 @@ func _change_scene(scene_path):
 	get_tree().change_scene(scene_path)
 	
 func load_deck_at(point_name):
-	if not point_name in cards:
+	if not point_name in cards or not cards[point_name]:
 		alert("Nothing here")
 		return
 	return cards[point_name]
