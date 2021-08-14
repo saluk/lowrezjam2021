@@ -24,8 +24,8 @@
         "5": []
     },
     "cards": {
-        "Green Coast": ["Potion Shop", "Potion Shop", "Potion Shop"],
-        "Deep Pit": ["Potion Shop"]
+        "Green Coast": ["Quickfoot"],
+        "Deep Pit": ["Antidote Potion"]
     },
     "stats": {
         "guile": 3,

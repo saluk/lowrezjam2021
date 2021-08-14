@@ -31,9 +31,6 @@
                 ["You forget the rune"]
             ]}		
         ]},
-        {"name":"Poison", "art":[], "actions":[
-            {"name":"OK", "action": ["equip"]}		
-        ], "bonus":["speed",-1], "icon":"poison", "removable":false},
         {"name":"Bandit Horde", "art":[], "actions":[
             {"name":"Hide (GLE:5)", "action": [
                 "check", "guile", 5,
@@ -54,8 +51,17 @@
             ]}
         ]},
 
+        {"name":"Poison", "art":[], "actions":[
+            {"name":"OK", "action": ["equip"]}		
+        ], "bonus":["speed",-1], "icon":"poison", "bad":true},
+
         {"name":"Health Potion", "art":[], "actions": [
             {"name":"Drink", "action":["modify", "hp", 10]},
+            {"name":"Discard"} 
+        ]
+        },
+        {"name":"Antidote Potion", "art":[], "actions": [
+            {"name":"Drink", "action":["clear_status"]},
             {"name":"Discard"} 
         ]
         },

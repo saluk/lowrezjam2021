@@ -1,13 +1,12 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://code/RichTextLabel.gd" type="Script" id=1]
 [ext_resource path="res://code/snake_bitmap.gd" type="Script" id=2]
 [ext_resource path="res://code/FadeSprites.gd" type="Script" id=3]
-[ext_resource path="res://code/AudioStreamPlayer.gd" type="Script" id=4]
+[ext_resource path="res://scenes/MusicPlayer.tscn" type="PackedScene" id=4]
 [ext_resource path="res://theme.tres" type="Theme" id=5]
 [ext_resource path="res://code/button.gd" type="Script" id=6]
 [ext_resource path="res://art/black.png" type="Texture" id=7]
-[ext_resource path="res://music/aderin-pursuit.mp3" type="AudioStream" id=8]
 [ext_resource path="res://art/cards/snake.png" type="Texture" id=9]
 [ext_resource path="res://scenes/MouseCursor.tscn" type="PackedScene" id=10]
 
@@ -91,8 +90,6 @@ __meta__ = {
 
 [node name="MouseCursor" parent="Interface/Control" instance=ExtResource( 10 )]
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 8 )
-script = ExtResource( 4 )
+[node name="AudioStreamPlayer" parent="." instance=ExtResource( 4 )]
 
 [connection signal="scroll_finished" from="Interface/Control/TextScroll" to="Interface/Control/FadeSprites" method="_on_TextScroll_scroll_finished"]

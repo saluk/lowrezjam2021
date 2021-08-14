@@ -39,3 +39,12 @@ func action_buy():
 	if self.action.arguments[1] > Globals.gp:
 		Globals.last_action_succeeded = false
 	Globals.add_next_card(self.action.arguments[0])
+
+func action_clear_status():
+	var new_eq = []
+	for e in Globals.equipment:
+		if "bad" in e:
+			pass
+		else:
+			new_eq.append(e)
+	Globals.equipment = new_eq
