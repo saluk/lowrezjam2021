@@ -248,8 +248,8 @@ func action_walk():
 	
 func action_enter():
 	current_deck = load_deck_at(current_point_location)
-	print(self.current_deck)
-	change_scene("res://scenes/DrawCards.tscn")
+	if current_deck:
+		change_scene("res://scenes/DrawCards.tscn")
 	
 func action_close_card():
 	change_scene("res://scenes/Map.tscn")
@@ -387,6 +387,7 @@ func _change_scene(scene_path):
 	
 func load_deck_at(point_name):
 	if not point_name in cards:
+		alert("Nothing here")
 		return
 	return cards[point_name]
 

@@ -14,6 +14,7 @@ export var is_cp = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Globals.register_mouse_handler(self, get_node("Control"))
+	get_node("AnimatedSprite").set_animation(Globals.config.get("points")[location_name]["type"])
 	
 func is_current_point():
 	return Globals.current_point_location == location_name

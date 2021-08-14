@@ -1,11 +1,17 @@
 {
     "rune_count": 2,
-    "cards": {
-		"Green Coast": ["Snake"],
-		"Tree of Wealth": [1],
-		"Coal City": [],
-		"Deep Pit": ["Boots (spd+1)"],
-		"Fairway Inn": [],
-        "Path": ["Snake","Snake","Snake","Snake"]
-	}
+    "points": {
+		"Green Coast": {"level":1, "type":"city"},
+		"Tree of Wealth": {"level":1, "type":"city"},
+		"Coal City": {"level":1, "type":"city"},
+		"Deep Pit": {"level":1, "type":"dungeon"},
+		"Fairway Inn": {"level":2, "type":"city"}
+	},
+    "path_cards": {
+        "1": [],
+        "2": [],
+        "3": [],
+        "4": []
+    },
+    "cards": {}
 }
