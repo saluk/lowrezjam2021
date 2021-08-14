@@ -1,6 +1,6 @@
 {
-    "rune_count": 2,
-    "dice_speed": 10.0,
+    "rune_count": 3,
+    "dice_speed": 1.0,
     "maxhp": 7,
     "gp": 3,
     "points": {
@@ -18,14 +18,22 @@
 	},
     "path_cards": {
         "1": ["Snake"],
-        "2": [],
-        "3": [],
-        "4": [],
-        "5": []
+        "2": ["Devil Dog"],
+        "3": ["Devil Dog", "Snake"],
+        "4": ["Devil Dog", "Snake"],
+        "5": ["Devil Dog", "Snake"]
     },
     "cards": {
-        "Green Coast": ["Quickfoot"],
-        "Deep Pit": ["Antidote Potion"]
+        "Green Coast": ["Boot Shop (speed + 1)"],
+        "Deep Pit": ["Rune Riga", "Small Pouch"],
+        "Fairway Inn": ["Potion Shop (hp + 10)"],
+        "Battle Ridge": ["Horse", "Rune Fet"],
+        "Tree of Wealth": ["Health Potion"],
+        "Coal City": ["Power Shop"],
+        "Mill": ["Horse Shop"],
+        "Factory": ["Rune Crou"],
+        "Wizened Stones": ["Rune Stel"],
+        "The Spire": ["Rune Hoti"]
     },
     "stats": {
         "guile": 3,
@@ -33,5 +41,5 @@
         "power": 3,
         "lore": 3
     },
-    "fixdice": 1
+    "fixdice": 0
 }

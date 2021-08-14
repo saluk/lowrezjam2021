@@ -49,7 +49,7 @@ position = Vector2( 58, 66 )
 location_name = "Coal City"
 
 [node name="Factory" parent="ScrollMap/points" instance=ExtResource( 5 )]
-position = Vector2( 81, 65 )
+position = Vector2( 61, 60 )
 location_name = "Coal City"
 
 [node name="Wizened Stones" parent="ScrollMap/points" instance=ExtResource( 5 )]

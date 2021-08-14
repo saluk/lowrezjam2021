@@ -201,7 +201,7 @@ func draw_card(arguments):
 	
 func add_next_card(card_index):
 	if not current_deck:
-		return
+		current_deck = []
 	current_deck.insert(0, card_index)
 
 func won_game():

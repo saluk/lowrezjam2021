@@ -7,6 +7,8 @@
 
 [sub_resource type="DynamicFont" id=1]
 size = 4
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
 extra_spacing_space = -1
 font_data = ExtResource( 2 )
 
@@ -20,7 +22,7 @@ margin_right = 40.0
 margin_bottom = 14.0
 theme = ExtResource( 1 )
 custom_fonts/font = SubResource( 1 )
-custom_colors/font_color = Color( 0.494118, 0, 0, 1 )
+custom_colors/font_color = Color( 1, 0.207843, 0.207843, 1 )
 text = "hp"
 script = ExtResource( 3 )
 __meta__ = {
@@ -35,7 +37,7 @@ margin_right = 9.0
 margin_bottom = 4.0
 theme = ExtResource( 1 )
 custom_fonts/font = SubResource( 1 )
-custom_colors/font_color = Color( 0.494118, 0, 0, 1 )
+custom_colors/font_color = Color( 0.941176, 0.972549, 0.376471, 1 )
 text = "gp"
 script = ExtResource( 4 )
 __meta__ = {

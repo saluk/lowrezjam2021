@@ -4,26 +4,23 @@
                 {"name":"Haggle", "action":[]},
                 {"name":"Leave", "action":[]}
         ]},
-        {"name":"Potion Shop", "art":["bazaar"], "actions":[
-            {"name":"3 gold", "action":["buy", "Health Potion", 3]},
+        {"name":"Potion Shop (hp + 10)", "art":["bazaar"], "actions":[
+            {"name":"2 gold", "action":["buy", "Health Potion", 2]},
             {"name":"Leave", "action":[]}
         ]},
-        {"name":"Alley", "art":["alley"], "actions":[
-                {"name":"Search", "action":[]},
-                {"name":"Pass", "action":[]}
+        {"name":"Boot Shop (speed + 1)", "art":["bazaar"], "actions":[
+            {"name":"4 gold", "action":["buy", "Boots", 4]},
+            {"name":"Leave", "action":[]}
         ]},
-        {"name":"Snake", "art":["snake"], "actions":[
-            {"name":"Fight (POW:4)", "action":[
-                "check", "power", 12,
-                ["Snake guts are messy", ["stat_up", "speed", 1]],
-                ["Fangs hurt", ["modify", "hp", -2]]
-            ]},
-            {"name":"Avoid (SPD:3)", "action":[
-                "check", "speed", 3,
-                ["You deftly sidestep it"],
-                ["POISONED.", ["draw_player_card", "Poison"]]
-            ]}
+        {"name":"Horse Shop (speed + 2)", "art":["bazaar"], "actions":[
+            {"name":"10 gold", "action":["buy", "Horse", 10]},
+            {"name":"Leave", "action":[]}
         ]},
+        {"name":"Power Shop (power + 2)", "art":["bazaar"], "actions":[
+            {"name":"8 gold", "action":["buy", "Power Potion", 8]},
+            {"name":"Leave", "action":[]}
+        ]},
+
         {"name":"Rune Riga", "art":["rune"], "actions":[
             {"name":"memorize", "action": [
                 "check", "lore", 1,
@@ -31,6 +28,35 @@
                 ["You forget the rune"]
             ]}		
         ]},
+        {"name":"Rune Stel", "art":["rune"], "actions":[
+            {"name":"memorize", "action": [
+                "check", "lore", 3,
+                ["The rune is in your heart", ["draw_player_card"]],
+                ["You forget the rune"]
+            ]}		
+        ]},
+        {"name":"Rune Hoti", "art":["rune"], "actions":[
+            {"name":"memorize", "action": [
+                "check", "lore", 4,
+                ["The rune is in your heart", ["draw_player_card"]],
+                ["You forget the rune"]
+            ]}		
+        ]},
+        {"name":"Rune Crou", "art":["rune"], "actions":[
+            {"name":"memorize", "action": [
+                "check", "lore", 4,
+                ["The rune is in your heart", ["draw_player_card"]],
+                ["You forget the rune"]
+            ]}		
+        ]},
+        {"name":"Rune Fet", "art":["rune"], "actions":[
+            {"name":"memorize", "action": [
+                "check", "lore", 4,
+                ["The rune is in your heart", ["draw_player_card"]],
+                ["You forget the rune"]
+            ]}		
+        ]},
+
         {"name":"Bandit Horde", "art":[], "actions":[
             {"name":"Hide (GLE:5)", "action": [
                 "check", "guile", 5,
@@ -50,6 +76,42 @@
                 ["You are beaten and looted", ["remove_player_card"], ["modify", "hp", -3]]
             ]}
         ]},
+        {"name":"Snake", "art":[], "actions":[
+            {"name":"Fight (POW:4)", "action":[
+                "check", "power", 4,
+                ["Snake guts are messy", ["stat_up", "power", 1]],
+                ["Fangs hurt", ["modify", "hp", -2]]
+            ]},
+            {"name":"Avoid (SPD:3)", "action":[
+                "check", "speed", 3,
+                ["You deftly sidestep it"],
+                ["POISONED.", ["draw_player_card", "Poison"]]
+            ]}
+        ]},
+        {"name":"Rock Lizard", "art":[], "actions":[
+            {"name":"Fight (POW:2)", "action":[
+                "check", "power", 2,
+                ["You beat it.", ["modify", "gp", 1]],
+                ["It bites", ["modify", "hp", -1]]
+            ]},
+            {"name":"Avoid (SPD:3)", "action":[
+                "check", "speed", 3,
+                ["You deftly sidestep it"],
+                ["It bites", ["modify", "hp", -1]]
+            ]}
+        ]},
+        {"name":"Devil Dog", "art":[], "actions":[
+            {"name":"Power 6", "action":[
+                "check", "power", 12,
+                ["Dog is injured", ["modify", "gp", 2]],
+                ["It bites", ["modify", "hp", -3]]
+            ]},
+            {"name":"Speed 4", "action":[
+                "check", "speed", 4,
+                ["You deftly sidestep it"],
+                ["It bites", ["modify", "hp", -3]]
+            ]}
+        ]},
 
         {"name":"Poison", "art":[], "actions":[
             {"name":"OK", "action": ["equip"]}		
@@ -62,6 +124,11 @@
         },
         {"name":"Antidote Potion", "art":[], "actions": [
             {"name":"Drink", "action":["clear_status"]},
+            {"name":"Discard"} 
+        ]
+        },
+        {"name":"Small Pouch", "art":[], "actions": [
+            {"name":"Take", "action":["modify", "gp", 5]},
             {"name":"Discard"} 
         ]
         },
@@ -89,6 +156,14 @@
         {"name":"Boots", "art":[], "actions": [
             {"name":"Equip", "action":["draw_player_card"]},
             {"name":"Discard"} 
-        ], "bonus":["speed",1], "icon":"boots"}
+        ], "bonus":["speed",1], "icon":"boots"},
+        {"name":"Power Potion", "art":[], "actions": [
+            {"name":"Equip", "action":["draw_player_card"]},
+            {"name":"Discard"} 
+        ], "bonus":["power",1], "icon":"boots"},
+        {"name":"Horse", "art":[], "actions": [
+            {"name":"Lead it", "action":["draw_player_card"]},
+            {"name":"Discard"} 
+        ], "bonus":["speed",2], "icon":"boots"}
     ]
 }

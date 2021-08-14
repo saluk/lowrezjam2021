@@ -18,8 +18,11 @@ func _ready():
 	if not card:
 		return
 	get_node("Interface/CardName").text = card["name"]
-	if card["art"]:
-		var texture_name = card["art"][rand_range(0,card["art"].size())]
+	var art = card["art"]
+	if not art:
+		art = ["card_front"]
+	if art:
+		var texture_name = art[rand_range(0,art.size())]
 		var texture = ResourceLoader.load("art/cards/"+texture_name+".png")
 		get_node("Background").texture = texture
 	for action in card["actions"]:

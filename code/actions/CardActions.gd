@@ -38,6 +38,11 @@ func action_modify():
 func action_buy():
 	if self.action.arguments[1] > Globals.gp:
 		Globals.last_action_succeeded = false
+		return
+	Globals.gp -= self.action.arguments[1]
+	Globals.add_next_card(self.action.arguments[0])
+
+func action_draw_card():
 	Globals.add_next_card(self.action.arguments[0])
 
 func action_clear_status():
