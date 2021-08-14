@@ -1,10 +1,11 @@
 {
-    "rune_count": 1,
+    "rune_count": 2,
     "cards": {
-		"Green Coast": ["Rune Riga"],
+		"Green Coast": ["Snake"],
 		"Tree of Wealth": [1],
-		"Coal City": [0, 0, 0, 0],
-		"Deep Pit": [1, 1, 1, 0],
-		"Fairway Inn": []
+		"Coal City": [],
+		"Deep Pit": ["Boots (spd+1)"],
+		"Fairway Inn": [],
+        "Path": ["Snake","Snake","Snake","Snake"]
 	}
 }

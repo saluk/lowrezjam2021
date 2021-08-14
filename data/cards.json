@@ -2,15 +2,11 @@
     "card_templates": [
         {"name":"Shop", "art":["bazaar"], "actions":[
                 {"name":"Haggle", "action":[]},
-                {"name":"Leave", "action":["close_card"]}
+                {"name":"Leave", "action":[]}
         ]},
         {"name":"Alley", "art":["alley"], "actions":[
                 {"name":"Search", "action":[]},
-                {"name":"Pass", "action":["close_card"]}
-        ]},
-        {"name":"Rune Found", "art":["alley"], "actions":[
-            {"name":"Start Over", "action":["new_game"]},
-            {"name":"Quit", "action":["quit_game"]}
+                {"name":"Pass", "action":[]}
         ]},
         {"name":"Boots (spd+1)", "art":[], "actions": [
             {"name":"Equip", "action":["draw_player_card"]},
@@ -18,9 +14,9 @@
         ], "bonus":["speed",1], "icon":"boots"},
         {"name":"Snake", "art":["snake"], "actions":[
             {"name":"Fight (POW:4)", "action":[
-                "check", "power", 4,
+                "check", "power", 12,
                 ["Snake guts are messy", ["stat_up", "speed", 1]],
-                ["Fangs hurt", ["modify", "hp", -2]]
+                ["Fangs hurt", ["modify", "hp", -2], ["remove_player_card"]]
             ]},
             {"name":"Avoid (SPD:3)", "action":[
                 "check", "speed", 3,
@@ -37,12 +33,12 @@
         ]},
         {"name":"Poisoned, -1 to SPD", "art":[], "actions":[
             {"name":"OK", "action": ["equip"]},		
-        ], "bonus":["speed",-1], "icon":"poison"},
+        ], "bonus":["speed",-1], "icon":"poison", "removable":false},
         {"name":"Bandit Horde", "art":[], "actions":[
             {"name":"Hide (GLE:5)", "action": [
                 "check", "guile", 5,
                 ["They pass you by"],
-                ["You are caught and must run!", ["add_event", "add_card_to_stack", [8]]]
+                ["You are caught and must run!", ["add_card_to_stack", ["Closer Bandit Horde"]]]
             ]},
             {"name":"Flee (SPD:5)", "action":[
                 "check", "speed", 5,

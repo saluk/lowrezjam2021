@@ -4,6 +4,8 @@ var icon = "active"
 export var location_name = "Tree of Wealth"
 var active = false
 
+export var is_cp = false
+
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -32,7 +34,7 @@ func _mouse_exit():
 func _process(delta):
 	if is_current_point():
 		Globals.current_point = self
-	draw_destination_line()
+	update()
 		
 func _clicked():
 	if not Globals.walk_path:
@@ -49,10 +51,10 @@ func deactivate():
 		get_node("AnimatedSprite").stop()
 		get_node("AnimatedSprite").frame = 0
 		
-func draw_destination_line():
-	if not is_current_point():
-		return
-	update()
+#func draw_destination_line():
+#	if not is_current_point():
+#		return
+#	update()
 	
 # Copied from reddit
 func draw_empty_circle(circle_center:Vector2, circle_radius:Vector2, color:Color, resolution:int):

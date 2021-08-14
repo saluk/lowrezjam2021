@@ -22,3 +22,15 @@ func action_draw_player_card():
 		var card_index = self.action.arguments[0]
 		Globals.current_card = Globals.get_card_template(card_index)
 	Globals.action_equip()
+
+func action_stat_up():
+	Globals.stat_up(self.action.arguments[0], self.action.arguments[1])
+
+func action_remove_player_card():
+	if not Globals.equipment:
+		return
+	var i = Globals.rng.randi_range(0, Globals.equipment.size()-1)
+	Globals.equipment.remove(i)
+
+func action_modify():
+	Globals.modify(self.action.arguments[0], self.action.arguments[1])

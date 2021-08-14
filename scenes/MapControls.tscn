@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://theme.tres" type="Theme" id=1]
+[ext_resource path="res://art/gear_icon.png" type="Texture" id=2]
 [ext_resource path="res://scenes/HoverLabel.gd" type="Script" id=3]
 [ext_resource path="res://scenes/ImageButton.tscn" type="PackedScene" id=4]
 [ext_resource path="res://art/walk_icon.png" type="Texture" id=5]
@@ -58,7 +59,7 @@ position = Vector2( 14, 5 )
 button_action = "gear"
 
 [node name="Foreground" parent="Control/GearButton" index="1"]
-texture = ExtResource( 7 )
+texture = ExtResource( 2 )
 
 [node name="PointLabel" type="Label" parent="Control"]
 margin_top = 43.0

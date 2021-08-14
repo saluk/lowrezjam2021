@@ -20,7 +20,7 @@ var save_keys = ["current_point_location", "cards", "stats", "gp", "hp"]
 var current_point_location = "Green Coast" # save
 var cards = {} # save
 var stats = {} # save
-var equipment = [{"name":"Boots (spd+1)", "art":[], "actions": [
+var equipment:Array = [{"name":"Boots (spd+1)", "art":[], "actions": [
 		{"name":"Equip", "action":["equip"]},
 		{"name":"Discard", "action":["close_card"]} 
 	], "bonus":["speed",1], "icon":"boots"}] # save
@@ -211,26 +211,32 @@ func get_rune_count():
 			total += 1
 	return total
 	
-func action_modify(arguments):
-	var field = arguments[0]
-	var amount = arguments[1]
+func modify(field, amount):
+	print("modifying ",field," by ",amount)
 	set(field, get(field) + amount)
 	if get(field) <= 0:
 		set(field, 0)
-		if has_method("_"+field+"_below_zero"):
-			call("_"+field+"_below_zero")
 			
-func action_stat_up(arguments):
-	var stat = arguments[0]
-	var amount = arguments[1]
+func stat_up(stat, amount):
 	stats[stat] = [stats[stat][0] + amount, stats[stat][1] + amount]
 	alert(
 		"You level up! " + stat + " to "+str(stats[stat][0]) + "/" +str(stats[stat][1])
 	)
 			
 func _hp_below_zero():
-	add_event("alert", ["Game Over!"])
-	add_event("change_scene", ["res://scenes/intro.tscn"])
+	if hp <= 0:
+		events.clear()
+		_alert = 0
+		alert("Game Over!")
+		change_scene("res://scenes/intro.tscn")
+		return true
+		
+func rest():
+	for stat in stats:
+		stats[stat][0] = stats[stat][1]
+	hp += 2
+	if hp >= stats["power"][1]:
+		hp = stats["power"][1]
 	
 func action_walk():
 	walk_path = {
@@ -303,11 +309,11 @@ func action_end_stat_check():
 	rolling_dice = []
 	dice_commited = 1
 	get_node("/root/SkillCheck").queue_free()
-	if Globals.check_result_successful:
-		Globals.card_result(Globals.check_win)
-	else:
-		Globals.card_result(Globals.check_lose)
-	add_event("change_scene",["scenes/Map.tscn"])
+	#if Globals.check_result_successful:
+	#	Globals.card_result(Globals.check_win)
+	#else:
+	#	Globals.card_result(Globals.check_lose)
+	#add_event("change_scene",["scenes/DrawCards.tscn"])
 
 
 func process_sounds():
@@ -364,7 +370,10 @@ func wait_for_alert():
 	else:
 		get_tree().paused = false
 		
-func change_scene(scene_path):
+func change_scene(scene_path, force=false):
+	if force:
+		_change_scene(scene_path)
+		return
 	add_event("_change_scene", [scene_path])
 
 func _change_scene(scene_path):

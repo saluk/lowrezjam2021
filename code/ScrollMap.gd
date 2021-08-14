@@ -14,6 +14,8 @@ func drag_end():
 	click = false
 
 func _ready():
+	if Globals._hp_below_zero():
+		return
 	if Globals.won_game():
 		return
 	Globals.proper_scene()
