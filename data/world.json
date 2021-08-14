@@ -3,18 +3,31 @@
     "dice_speed": 10.0,
     "points": {
 		"Green Coast": {"level":1, "type":"city"},
-		"Tree of Wealth": {"level":1, "type":"city"},
-		"Coal City": {"level":1, "type":"city"},
+		"Tree of Wealth": {"level":2, "type":"city"},
+		"Coal City": {"level":2, "type":"city"},
 		"Deep Pit": {"level":1, "type":"dungeon"},
-		"Fairway Inn": {"level":2, "type":"city"}
+		"Fairway Inn": {"level":2, "type":"city"},
+        "Battle Ridge": {"level":2, "type":"dungeon"},
+        "Mill": {"level":3, "type":"city"},
+        "Factory": {"level":3, "type":"dungeon"},
+        "Wizened Stones": {"level":4, "type":"dungeon"},
+        "Sunken Town": {"level":4, "type":"city"},
+        "The Spire": {"level":5, "type":"dungeon"}
 	},
     "path_cards": {
         "1": ["Snake"],
         "2": [],
         "3": [],
-        "4": []
+        "4": [],
+        "5": []
     },
     "cards": {
         "Green Coast": [1, 1]
+    },
+    "stats": {
+        "guile": 3,
+        "speed": 20,
+        "power": 3,
+        "lore": 3
     }
 }

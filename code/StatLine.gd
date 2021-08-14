@@ -19,7 +19,7 @@ func _mouse_exit():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	info_box = get_node("/root/Node2D/Interface/Control/InfoBox")
+	info_box = get_node("/root/StatsMenu/Interface/Control/InfoBox")
 	Globals.register_mouse_handler(self, self)
 
 func set_stat(inc_stat):

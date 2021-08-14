@@ -13,6 +13,7 @@ export var is_cp = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	location_name = name
 	Globals.register_mouse_handler(self, get_node("Control"))
 	get_node("AnimatedSprite").set_animation(Globals.config.get("points")[location_name]["type"])
 	

@@ -250,12 +250,17 @@ func action_walk():
 		"progress":0.0,
 		"cards":[]
 	}
+	current_point.deactivate()
+	destination.deactivate()
 	walk_path["next_card"] = walk_path["length"]/distance_to_travel_per_speed
 	var level = config.get("points")[destination.location_name]["level"]
 	var possible_cards = config.get("path_cards")[str(level)]
-	for i in range(int(walk_path["length"]/distance_to_travel_per_speed)+1):
-		var card_index = possible_cards[rng.randi_range(0,possible_cards.size()-1)]
-		walk_path["cards"].append(get_card_template(card_index))
+	if not possible_cards:
+		walk_path["cards"] = []
+	else:
+		for i in range(int(walk_path["length"]/distance_to_travel_per_speed)+1):
+			var card_index = possible_cards[rng.randi_range(0,possible_cards.size()-1)]
+			walk_path["cards"].append(get_card_template(card_index))
 	change_mode("draw")
 	
 func get_walk_start():
@@ -484,12 +489,9 @@ func new_game():
 	_alert = 0
 	current_point_location = "Green Coast"
 	cards = config.get("cards").duplicate(true)
-	stats = {
-		"guile": [3, 3],
-		"power": [3, 3],
-		"speed": [3, 3],
-		"lore": [3, 3]
-	}
+	stats = {}
+	for stat in config.get("stats"):
+		stats[stat] = [config.get("stats")[stat], config.get("stats")[stat]]
 	gp = 2
 	hp = 3
 	equipment = []
