@@ -42,9 +42,11 @@ func action_buy():
 
 func action_clear_status():
 	var new_eq = []
+	var bad = []
 	for e in Globals.equipment:
 		if "bad" in e:
-			pass
+			bad.append(e)
+			Globals.equip_remove(e)
 		else:
 			new_eq.append(e)
 	Globals.equipment = new_eq

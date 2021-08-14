@@ -375,10 +375,12 @@ func get_equip_shield():
 			modifier += equip["shield"]
 	return modifier
 	
-func recover_stat(stat):
-	if stats[stat][0] < stats[stat][1]:
-		stats[stat][0] += 1
-		alert("recovered 1 "+stat)
+func recover_stat(stat, amt):
+	var diff = stats[stat][1] -stats[stat][0]
+	amt = min(amt, diff)
+	if amt:
+		stats[stat][0] += amt
+		alert("recovered "+str(amt)+" "+stat)
 	
 func action_equip():
 	equipment.append(current_card)
@@ -565,6 +567,10 @@ func _change_scene(scene_path):
 	get_tree().change_scene(scene_path)
 	
 func load_deck_at(point_name):
+	if config.get("points")[point_name]["type"] == "city":
+		#Refresh city cards
+		print(config.settings["cards"])
+		cards[point_name] = config.get("cards")[point_name].duplicate(true)
 	if not point_name in cards or not cards[point_name]:
 		alert("Nothing here")
 		return
