@@ -4,6 +4,10 @@
                 {"name":"Haggle", "action":[]},
                 {"name":"Leave", "action":[]}
         ]},
+        {"name":"Potion Shop", "art":["bazaar"], "actions":[
+            {"name":"3 gold", "action":["buy", "Health Potion", 3]},
+            {"name":"Leave", "action":[]}
+        ]},
         {"name":"Alley", "art":["alley"], "actions":[
                 {"name":"Search", "action":[]},
                 {"name":"Pass", "action":[]}

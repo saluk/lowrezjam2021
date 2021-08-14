@@ -34,3 +34,8 @@ func action_remove_player_card():
 
 func action_modify():
 	Globals.modify(self.action.arguments[0], self.action.arguments[1])
+
+func action_buy():
+	if self.action.arguments[1] > Globals.gp:
+		Globals.last_action_succeeded = false
+	Globals.add_next_card(self.action.arguments[0])

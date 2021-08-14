@@ -2,7 +2,7 @@
     "rune_count": 2,
     "dice_speed": 10.0,
     "maxhp": 7,
-    "gp": 0,
+    "gp": 3,
     "points": {
 		"Green Coast": {"level":1, "type":"city"},
 		"Tree of Wealth": {"level":2, "type":"city"},
@@ -24,8 +24,8 @@
         "5": []
     },
     "cards": {
-        "Green Coast": ["Shield", "Whip", "Healthy Aura", "Boots", "Quickfoot"],
-        "Deep Pit": ["Health Potion"]
+        "Green Coast": ["Potion Shop", "Potion Shop", "Potion Shop"],
+        "Deep Pit": ["Potion Shop"]
     },
     "stats": {
         "guile": 3,

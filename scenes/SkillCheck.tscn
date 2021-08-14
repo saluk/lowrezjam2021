@@ -38,7 +38,6 @@ __meta__ = {
 margin_right = 64.0
 margin_bottom = 9.0
 text = "Str check"
-align = 1
 autowrap = true
 script = ExtResource( 11 )
 __meta__ = {
@@ -95,7 +94,7 @@ position = Vector2( 19, 23 )
 position = Vector2( 41, 24 )
 
 [node name="AddDiceButton" parent="Interface/Control" instance=ExtResource( 5 )]
-position = Vector2( 51, 25 )
+position = Vector2( 51, 4 )
 button_action = "add_dice"
 node_text_path = "/root/SkillCheck/Interface/Control/InfoBox/Label"
 hover_description = "add dice to check"
@@ -103,7 +102,7 @@ use_info_box = true
 
 [node name="RemoveDiceButton" parent="Interface/Control" instance=ExtResource( 5 )]
 material = SubResource( 1 )
-position = Vector2( 60, 25 )
+position = Vector2( 60, 4 )
 button_action = "remove_dice"
 node_text_path = "/root/SkillCheck/Interface/Control/InfoBox/Label"
 hover_description = "remove dice from check"

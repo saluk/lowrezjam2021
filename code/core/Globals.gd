@@ -42,6 +42,7 @@ var destination = null
 var walk_path = null
 var current_card = null
 var current_deck = null
+var last_action_succeeded = true
 
 # stat check
 var dice_commited = 1
@@ -163,7 +164,7 @@ func call_action(action):
 	if action_class and action_class.has_method("action_"+action.method):
 		action_class.call("action_"+action.method)
 	else:
-		call("action_"+action.method, action)
+		return call("action_"+action.method, action)
 		
 func add_event(name, arguments):
 	events.append([name, arguments])
@@ -197,6 +198,11 @@ func draw_card(arguments):
 	current_card = get_card_template(card_index)
 	print(current_card)
 	change_scene("res://scenes/Card.tscn")
+	
+func add_next_card(card_index):
+	if not current_deck:
+		return
+	current_deck.insert(0, card_index)
 
 func won_game():
 	if _won:

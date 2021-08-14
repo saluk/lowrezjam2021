@@ -1,5 +1,6 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
+[ext_resource path="res://scenes/HealthDisplay.tscn" type="PackedScene" id=1]
 [ext_resource path="res://code/Card.gd" type="Script" id=2]
 [ext_resource path="res://theme.tres" type="Theme" id=3]
 [ext_resource path="res://art/black.png" type="Texture" id=4]
@@ -46,3 +47,5 @@ size = Vector2( 64, 64 )
 [node name="CardBack" type="Sprite" parent="."]
 position = Vector2( 32, 32 )
 texture = ExtResource( 5 )
+
+[node name="HPDisplay" parent="." instance=ExtResource( 1 )]

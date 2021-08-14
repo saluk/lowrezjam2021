@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://theme.tres" type="Theme" id=1]
 [ext_resource path="res://fonts/ikkle-4.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://code/HealthDisplay.gd" type="Script" id=3]
+[ext_resource path="res://code/GoldDisplay.gd" type="Script" id=4]
 
 [sub_resource type="DynamicFont" id=1]
 size = 4
@@ -20,7 +21,23 @@ margin_bottom = 14.0
 theme = ExtResource( 1 )
 custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0.494118, 0, 0, 1 )
+text = "hp"
 script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Node2D2" type="Node2D" parent="."]
+position = Vector2( 46, 8 )
+
+[node name="Label2" type="Label" parent="Node2D2"]
+margin_right = 9.0
+margin_bottom = 4.0
+theme = ExtResource( 1 )
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0.494118, 0, 0, 1 )
+text = "gp"
+script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

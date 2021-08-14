@@ -27,8 +27,9 @@ func _mouse_exit():
 	get_node("Label").set("custom_colors/font_color", Color(1, 1, 1, 1))
 
 func perform_card_action():
+	Globals.last_action_succeeded = true
 	if not "action" in button_action:
-			return
+		return
 	var action:Array = button_action["action"]
 	if not action:
 		return
@@ -36,8 +37,9 @@ func perform_card_action():
 	var arguments = action.slice(1, action.size())
 	
 	var action_ob = Action.new(method, arguments, theme, "DrawCards")
-	Globals.call_action(action_ob)
+	return Globals.call_action(action_ob)
 
 func _clicked():
-	perform_card_action()
-	Globals.current_card = null
+	var succeed = perform_card_action()
+	if Globals.last_action_succeeded == true:
+		Globals.current_card = null
