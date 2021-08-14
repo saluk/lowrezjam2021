@@ -55,6 +55,8 @@ func _process(_delta):
 	scroll_to_player(8)
 
 func _on_MouseCursor_mouse_cursor_moved(_cursor_position, relative):
+	if Globals.map_mode != "explore":
+		return
 	if click:
 		have_scrolled = true
 		position += relative

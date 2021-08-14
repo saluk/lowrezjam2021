@@ -1,11 +1,19 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://theme.tres" type="Theme" id=1]
 [ext_resource path="res://scenes/InfoBox.tscn" type="PackedScene" id=2]
 [ext_resource path="res://code/DrawCards.gd" type="Script" id=3]
+[ext_resource path="res://art/cards/card_back.png" type="Texture" id=4]
+[ext_resource path="res://code/DrawingCard.gd" type="Script" id=5]
 
 [node name="DrawCards" type="Node2D"]
 script = ExtResource( 3 )
+
+[node name="Card" type="Sprite" parent="."]
+position = Vector2( 32, 32 )
+scale = Vector2( 0.156863, 0.171875 )
+texture = ExtResource( 4 )
+script = ExtResource( 5 )
 
 [node name="Control" type="Control" parent="."]
 margin_right = 64.0
@@ -15,12 +23,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GearIcons" type="Node2D" parent="Control"]
-
 [node name="Label" type="Label" parent="Control"]
 margin_right = 64.0
 margin_bottom = 10.0
-text = "Deck - location"
 __meta__ = {
 "_edit_use_anchors_": false
 }

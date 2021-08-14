@@ -38,6 +38,8 @@ func _process(delta):
 	update()
 		
 func _clicked():
+	if Globals.map_mode != "explore":
+		return
 	if not Globals.walk_path:
 		Globals.set_destination(self)
 	
@@ -51,11 +53,6 @@ func deactivate():
 		active = false
 		get_node("AnimatedSprite").stop()
 		get_node("AnimatedSprite").frame = 0
-		
-#func draw_destination_line():
-#	if not is_current_point():
-#		return
-#	update()
 	
 # Copied from reddit
 func draw_empty_circle(circle_center:Vector2, circle_radius:Vector2, color:Color, resolution:int):
@@ -75,6 +72,8 @@ func draw_empty_circle(circle_center:Vector2, circle_radius:Vector2, color:Color
 	
 func _draw():
 	if not is_current_point():
+		return
+	if Globals.map_mode != "explore":
 		return
 	draw_empty_circle(
 		Vector2(0,0), 

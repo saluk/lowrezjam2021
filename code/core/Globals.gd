@@ -33,6 +33,7 @@ var stat_descriptions = {
 	"lore":"solve puzzles"
 }
 
+var map_mode = "explore"
 var current_point = null
 
 var mouse_clicked = false
@@ -77,13 +78,15 @@ func get_player_pos():
 		return current_point.position + Vector2(6, 2)
 	if not walk_path:
 		return null
-	var dir = walk_path["end"].position - walk_path["start"].position
+	var dir = get_walk_end().position - get_walk_start().position
 	var prog_vec = dir.normalized() * walk_path["progress"]
-	return walk_path["start"].position + prog_vec
+	return get_walk_start().position + prog_vec
+	
+func change_mode(mode):
+	map_mode = mode
 	
 func proper_scene():
-	if current_deck and current_deck.size() > 0:
-		change_scene("scenes/DrawCards.tscn")
+	return
 
 func _input(ev):
 	if ev is InputEventMouseButton:
@@ -240,16 +243,34 @@ func rest():
 	
 func action_walk():
 	walk_path = {
-		"start":current_point,
-		"end":destination,
+		"start":current_point.location_name,
+		"end":destination.location_name,
 		"length":(destination.position-current_point.position).length(),
-		"progress":0.0
+		"progress":0.0,
+		"cards":[]
 	}
+	walk_path["next_card"] = walk_path["length"]/distance_to_travel_per_speed
+	var level = config.get("points")[destination.location_name]["level"]
+	var possible_cards = config.get("path_cards")[str(level)]
+	for i in range(int(walk_path["length"]/distance_to_travel_per_speed)+1):
+		var card_index = possible_cards[rng.randi_range(0,possible_cards.size()-1)]
+		walk_path["cards"].append(get_card_template(card_index))
+	change_mode("draw")
+	
+func get_walk_start():
+	for node in get_tree().get_nodes_in_group("point"):
+		if node.location_name == walk_path["start"]:
+			return node
+
+func get_walk_end():
+	for node in get_tree().get_nodes_in_group("point"):
+		if node.location_name == walk_path["end"]:
+			return node
 	
 func action_enter():
 	current_deck = load_deck_at(current_point_location)
 	if current_deck:
-		change_scene("res://scenes/DrawCards.tscn")
+		change_mode("draw")
 	
 func action_close_card():
 	change_scene("res://scenes/Map.tscn")
@@ -306,14 +327,11 @@ func action_close():
 	change_scene("scenes/Map.tscn")
 	
 func action_end_stat_check():
+	current_card = null
 	rolling_dice = []
 	dice_commited = 1
 	get_node("/root/SkillCheck").queue_free()
-	#if Globals.check_result_successful:
-	#	Globals.card_result(Globals.check_win)
-	#else:
-	#	Globals.card_result(Globals.check_lose)
-	#add_event("change_scene",["scenes/DrawCards.tscn"])
+	change_scene("scenes/Map.tscn")
 
 
 func process_sounds():
@@ -327,18 +345,68 @@ func process_sounds():
 			
 
 func _process(delta):
+	#print(get_scene())
 	process_sounds()
 	if wait_for_alert():
 		return
 	if process_event():
 		return
+	if process_check():
+		return
+	if process_card():
+		return
+	if process_walking(delta):
+		return
+	if process_deck():
+		return
+
+func process_check():
+	if get_scene() == "check":
+		return true
+
+func process_card():
+	if get_scene() == "card":
+		return true
+		
+func get_scene():
+	if has_node("/root/Node2D/ScrollMap"):
+		return "map"
+	if has_node("/root/Node2D/CardBack"):
+		return "card"
+	if has_node("/root/SkillCheck"):
+		return "check"
+		
+func process_deck():
+	if current_deck and get_scene() == "map":
+		if not current_card:
+			var cardindex = current_deck.pop_front()
+			var card = get_card_template(cardindex)
+			current_card = card
+			change_scene("scenes/Card.tscn")
+	else:
+		if map_mode == "draw":
+			rest()
+			change_mode("explore")
+		return false
+		
+func process_walking(delta):
 	if walk_path:
 		walk_path["progress"] += travel_speed * delta
+		walk_path["next_card"] -= travel_speed * delta
+		if walk_path["next_card"] <= 0:
+			walk_path["next_card"] = walk_path["length"]/distance_to_travel_per_speed
+			if walk_path["cards"]:
+				current_card = walk_path["cards"].pop_front()
+				change_scene("scenes/Card.tscn")
+				return true
 		if walk_path["progress"] > walk_path["length"]:
-			current_point = walk_path["end"]
+			current_point = get_walk_end()
+			if not current_point:
+				return false
 			current_point_location = current_point.location_name
 			walk_path = null
 			destination = null
+		return true
 			
 func process_event():
 	if not events:

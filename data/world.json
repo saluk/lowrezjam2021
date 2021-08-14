@@ -8,10 +8,12 @@
 		"Fairway Inn": {"level":2, "type":"city"}
 	},
     "path_cards": {
-        "1": [],
+        "1": ["Snake"],
         "2": [],
         "3": [],
         "4": []
     },
-    "cards": {}
+    "cards": {
+        "Green Coast": [1]
+    }
 }

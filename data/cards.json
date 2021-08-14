@@ -14,7 +14,7 @@
         ], "bonus":["speed",1], "icon":"boots"},
         {"name":"Snake", "art":["snake"], "actions":[
             {"name":"Fight (POW:4)", "action":[
-                "check", "power", 12,
+                "check", "power", 1,
                 ["Snake guts are messy", ["stat_up", "speed", 1]],
                 ["Fangs hurt", ["modify", "hp", -2], ["remove_player_card"]]
             ]},

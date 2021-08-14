@@ -33,7 +33,9 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[node name="PointOfInterest" type="Node2D"]
+[node name="PointOfInterest" type="Node2D" groups=[
+"point",
+]]
 script = ExtResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]

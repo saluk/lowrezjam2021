@@ -13,6 +13,9 @@ var mouse_over = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Globals.register_mouse_handler(self, get_node("Control"))
+func queue_free():
+	Globals.clear_mouse_over(self)
+	.queue_free()
 	
 func set_icon(icon):
 	$Foreground.texture = ResourceLoader.load("art/gear/"+icon+".png")
@@ -61,6 +64,8 @@ func walk_visible():
 		visible = true
 	else:
 		visible = false
+	if Globals.map_mode != "explore":
+		visible = false
 		
 func walk_disabled():
 	if not Globals.can_walk():
@@ -84,6 +89,8 @@ func enter_visible():
 	if travel_method() == "enter":
 		visible = true
 	else:
+		visible = false
+	if Globals.map_mode != "explore":
 		visible = false
 
 func walk_position():

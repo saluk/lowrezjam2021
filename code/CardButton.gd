@@ -15,6 +15,10 @@ func set_action(action):
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Globals.register_mouse_handler(self, get_node("Label"))
+	
+func queue_free():
+	Globals.clear_mouse_over(self)
+	.queue_free()
 
 func _mouse_enter():
 	get_node("Label").set("custom_colors/font_color", Color(1, 1, 0, 1))
@@ -36,7 +40,3 @@ func perform_card_action():
 
 func _clicked():
 	perform_card_action()
-	
-	# Return to proper scnee
-	if theme == "card":
-		Globals.change_scene("scenes/DrawCards.tscn")

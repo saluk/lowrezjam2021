@@ -20,7 +20,7 @@ func _on_ScrollMap_override_mouse(mouse_icon = "default"):
 	set_cursor(mouse_icon)
 	
 func _process(delta):
-	if Globals.walk_path:
+	if Globals.walk_path and Globals.get_scene() == "map":
 		visible = false
 	else:
 		visible = true
